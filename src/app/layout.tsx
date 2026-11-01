@@ -2,18 +2,17 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SHIVOHAM | Sarees, Dresses & Indian Ethnic Wear",
+  title: "SHIVOHAM | Luxury Indian Ethnic Wear | Sarees, Kurtis & Suits",
   description:
-    "Elegance Woven in Every Thread. Discover 78 handcrafted Sarees, Dresses, and Kurtis at SHIVOHAM.",
+    "Elegance in Every Thread. Discover handcrafted pure cotton Sarees, artisanal Kurtis, and royal Suit sets at SHIVOHAM.",
   keywords: [
     "SHIVOHAM",
     "Indian ethnic wear",
-    "Sarees",
-    "Dresses",
+    "Cotton Sarees",
     "Kurtis",
-    "Banarasi Silk",
-    "Lucknowi Chikankari",
-    "Luxury ethnic fashion",
+    "Suits",
+    "Handloom Sarees",
+    "Boutique Ethnic Wear",
   ],
 };
 

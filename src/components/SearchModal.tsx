@@ -45,7 +45,11 @@ export default function SearchModal() {
     let list = allCatalogProducts.filter((p) => p.isPublished !== false);
 
     if (selectedCategory !== "All") {
-      list = list.filter((p) => p.category === selectedCategory);
+      if (selectedCategory === "Suits") {
+        list = list.filter((p) => p.category === "Suits" || (p.category as string) === "Dresses");
+      } else {
+        list = list.filter((p) => p.category === selectedCategory);
+      }
     }
 
     if (query.trim()) {
@@ -112,7 +116,7 @@ export default function SearchModal() {
           <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold shrink-0">
             Category:
           </span>
-          {(["All", "Sarees", "Dresses", "Kurtis"] as const).map((cat) => (
+          {(["All", "Sarees", "Kurtis", "Suits"] as const).map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}

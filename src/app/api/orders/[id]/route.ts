@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getOrderById, updateOrderStatus, updateOrder } from "@/lib/db";
+import { getOrderById, updateOrderStatus, updateOrder, syncWithCloudDb } from "@/lib/db";
 import { checkAdminSessionFromRequest } from "@/lib/auth";
 import { getCustomerSessionFromRequest } from "@/lib/customerAuth";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await syncWithCloudDb();
     const { id } = await params;
     const order = getOrderById(id);
 
@@ -30,7 +34,15 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ success: true, order }, { status: 200 });
+    return NextResponse.json(
+      { success: true, order },
+      {
+        status: 200,
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      }
+    );
   } catch (error: any) {
     console.error("GET /api/orders/[id] error:", error);
     return NextResponse.json(
@@ -53,6 +65,7 @@ export async function PATCH(
       );
     }
 
+    await syncWithCloudDb();
     const { id } = await params;
     const body = await req.json();
 
@@ -85,7 +98,15 @@ export async function PATCH(
       );
     }
 
-    return NextResponse.json({ success: true, order: updated }, { status: 200 });
+    return NextResponse.json(
+      { success: true, order: updated },
+      {
+        status: 200,
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      }
+    );
   } catch (error: any) {
     console.error("PATCH /api/orders/[id] error:", error);
     return NextResponse.json(

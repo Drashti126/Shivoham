@@ -78,6 +78,13 @@ CUSTOMER_JWT_SECRET=shivoham_customer_secure_secret_2026
 # WhatsApp Concierge Business Contact (Without + or country code)
 NEXT_PUBLIC_WHATSAPP_NUMBER=9724984714
 
+# Vercel KV / Upstash Redis (For cloud database persistence across Vercel lambdas)
+KV_REST_API_URL=
+KV_REST_API_TOKEN=
+
+# Vercel Blob Storage (For production image uploads CDN)
+BLOB_READ_WRITE_TOKEN=
+
 # Payment Gateway (Optional - If unset, runs in simulated test mode)
 RAZORPAY_KEY_ID=
 RAZORPAY_KEY_SECRET=
@@ -109,9 +116,30 @@ npm run start
 ## 🔑 Default Credentials
 
 - **Admin Portal**: [http://localhost:3000/admin](http://localhost:3000/admin)
+  - **Login Route**: `/admin/login`
   - **Email**: `admin@shivoham.com`
   - **Password**: `shivoham@admin2026`
 - **Customer Sign In**: [http://localhost:3000/account/login](http://localhost:3000/account/login)
   - Customers can register optionally or continue as guest.
 - **Customer Storefront**: [http://localhost:3000](http://localhost:3000)
 - **Official WhatsApp Number**: `+91 9724984714`
+
+---
+
+## 🚢 Deploying to Vercel
+
+### 1. Push Code to your GitHub Repository
+```bash
+git add .
+git commit -m "Add protected Admin Panel, multi-image upload, and persistent cloud DB support"
+git push origin main
+```
+Vercel automatically triggers a build and deploys your updated website to your existing domain (e.g. `https://shivoham-gold.vercel.app`).
+
+### 2. Configure Persistent Storage on Vercel (Optional & Recommended)
+Because Vercel serverless functions run in a read-only environment:
+1. Go to your **Vercel Dashboard** -> select your project `shivoham-gold` -> **Storage** tab.
+2. Click **Create Database** -> select **KV** (Powered by Upstash).
+3. Connect it to your project — Vercel will automatically configure `KV_REST_API_URL` and `KV_REST_API_TOKEN`.
+4. (Optional for Image CDN) Click **Create Database** -> select **Blob** -> connect it to auto-set `BLOB_READ_WRITE_TOKEN`.
+5. Redeploy or trigger a build. Your products, prices, stock changes, and customer orders will now persist permanently across all lambdas!

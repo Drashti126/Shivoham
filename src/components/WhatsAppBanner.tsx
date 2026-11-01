@@ -12,9 +12,7 @@ export default function WhatsAppBanner() {
   };
 
   return (
-    <>
-      {/* Pre-Footer WhatsApp Consultation Concierge (Surekhi Signature Service) */}
-      <section className="bg-[#FAF7F0] border-b border-[#F3EBDD] py-16 sm:py-20 text-center">
+    <section className="bg-[#FAF7F0] border-b border-[#F3EBDD] py-16 sm:py-20 text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
           <div className="inline-flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#B89A5A] font-semibold">
             <Sparkles className="w-3.5 h-3.5 text-[#B89A5A]" />
@@ -75,23 +73,5 @@ export default function WhatsAppBanner() {
           </div>
         </div>
       </section>
-
-      {/* Floating WhatsApp Quick Action Button */}
-      <aside aria-label="WhatsApp Quick Contact">
-        <a
-          href={BUSINESS_CONTACT.whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 z-40 bg-[#173D2B] text-[#FAF7F0] hover:bg-[#0f291d] p-3 rounded-full shadow-2xl flex items-center gap-2 transition-transform hover:scale-105 border border-[#B89A5A]/50 group"
-          aria-label="Contact SHIVOHAM Stylist on WhatsApp"
-          title="WhatsApp Concierge: +91 9724984714"
-        >
-          <MessageCircle className="w-5 h-5 text-[#FAF7F0]" />
-          <span className="text-[11px] font-semibold uppercase tracking-wider pr-1 hidden sm:inline">
-            Stylist Chat
-          </span>
-        </a>
-      </aside>
-    </>
-  );
+    );
 }

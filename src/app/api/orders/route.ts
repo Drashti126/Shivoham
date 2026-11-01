@@ -1,21 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getOrders, createOrder, getOrdersByCustomer } from "@/lib/db";
+import { getOrders, createOrder, getOrdersByCustomer, syncWithCloudDb } from "@/lib/db";
 import { checkAdminSessionFromRequest } from "@/lib/auth";
 import { getCustomerSessionFromRequest } from "@/lib/customerAuth";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(req: NextRequest) {
   try {
+    await syncWithCloudDb();
+
     const isAdmin = checkAdminSessionFromRequest(req);
     const customerSession = getCustomerSessionFromRequest(req);
 
     if (isAdmin) {
       const orders = getOrders();
-      return NextResponse.json({ success: true, orders }, { status: 200 });
+      return NextResponse.json(
+        { success: true, orders },
+        {
+          status: 200,
+          headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate",
+          },
+        }
+      );
     }
 
     if (customerSession) {
       const orders = getOrdersByCustomer(customerSession.id, customerSession.email);
-      return NextResponse.json({ success: true, orders }, { status: 200 });
+      return NextResponse.json(
+        { success: true, orders },
+        {
+          status: 200,
+          headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate",
+          },
+        }
+      );
     }
 
     return NextResponse.json(
@@ -33,6 +54,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    await syncWithCloudDb();
     const body = await req.json();
 
     if (!body.items || !Array.isArray(body.items) || body.items.length === 0) {
@@ -74,7 +96,12 @@ export async function POST(req: NextRequest) {
         order: newOrder,
         message: "Order placed successfully",
       },
-      { status: 201 }
+      {
+        status: 201,
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      }
     );
   } catch (error: any) {
     console.error("POST /api/orders error:", error);

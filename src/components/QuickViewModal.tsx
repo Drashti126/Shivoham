@@ -20,6 +20,21 @@ export default function QuickViewModal() {
   const [activeImage, setActiveImage] = useState<string>("");
   const [addedNotice, setAddedNotice] = useState(false);
 
+  const allImages = React.useMemo(() => {
+    if (!quickViewProduct) return [];
+    const list: string[] = [];
+    if (quickViewProduct.image) list.push(quickViewProduct.image);
+    if (quickViewProduct.secondaryImage && !list.includes(quickViewProduct.secondaryImage)) {
+      list.push(quickViewProduct.secondaryImage);
+    }
+    if (Array.isArray(quickViewProduct.gallery)) {
+      quickViewProduct.gallery.forEach((img) => {
+        if (img && !list.includes(img)) list.push(img);
+      });
+    }
+    return list;
+  }, [quickViewProduct]);
+
   useEffect(() => {
     if (quickViewProduct) {
       setSelectedSize(quickViewProduct.sizes[0] || "Standard");
@@ -71,9 +86,9 @@ export default function QuickViewModal() {
           <X className="w-5 h-5" />
         </button>
 
-        {/* Media Frame & Image Thumbnails (Libas Style) */}
+        {/* Media Frame & Image Thumbnails */}
         <div className="relative md:w-1/2 aspect-[3/4] md:aspect-auto bg-[#F3EBDD] shrink-0 flex flex-col justify-between">
-          <div className="relative w-full h-full min-h-[300px]">
+          <div className="relative w-full h-full min-h-[240px] sm:min-h-[300px]">
             <Image
               src={encodeURI(activeImage || quickViewProduct.image)}
               alt={quickViewProduct.name}
@@ -83,59 +98,50 @@ export default function QuickViewModal() {
             />
 
             {/* Badges */}
-            <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
+            <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 flex flex-col gap-1">
               {quickViewProduct.badge && (
-                <span className="text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 bg-[#173D2B] text-[#FAF7F0]">
+                <span className="text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 bg-[#173D2B] text-[#FAF7F0] rounded-2xs">
                   {quickViewProduct.badge}
                 </span>
               )}
               {discountPercent && (
-                <span className="text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 bg-[#801426] text-[#FAF7F0]">
+                <span className="text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 bg-[#801426] text-[#FAF7F0] rounded-2xs">
                   {discountPercent}% OFF
                 </span>
               )}
             </div>
           </div>
 
-          {/* Thumbnail switcher if secondaryImage exists */}
-          {quickViewProduct.secondaryImage && (
-            <div className="absolute bottom-3 left-3 flex gap-2 z-20">
-              <button
-                onClick={() => setActiveImage(quickViewProduct.image)}
-                className={`relative w-11 h-14 border-2 overflow-hidden rounded-xs ${
-                  activeImage === quickViewProduct.image
-                    ? "border-[#173D2B]"
-                    : "border-white/80 opacity-80"
-                }`}
-              >
-                <Image
-                  src={quickViewProduct.image}
-                  alt="Thumb 1"
-                  fill
-                  className="object-cover"
-                />
-              </button>
-              <button
-                onClick={() => setActiveImage(quickViewProduct.secondaryImage!)}
-                className={`relative w-11 h-14 border-2 overflow-hidden rounded-xs ${
-                  activeImage === quickViewProduct.secondaryImage
-                    ? "border-[#173D2B]"
-                    : "border-white/80 opacity-80"
-                }`}
-              >
-                <Image
-                  src={quickViewProduct.secondaryImage}
-                  alt="Thumb 2"
-                  fill
-                  className="object-cover"
-                />
-              </button>
+          {/* Thumbnail switcher for multiple images */}
+          {allImages.length > 1 && (
+            <div className="absolute bottom-2.5 left-2.5 flex gap-1.5 z-20 max-w-[85%] overflow-x-auto pb-1 scrollbar-thin">
+              {allImages.map((img, idx) => (
+                <button
+                  key={`${img}-${idx}`}
+                  type="button"
+                  onClick={() => setActiveImage(img)}
+                  className={`relative w-10 h-12 sm:w-11 sm:h-14 shrink-0 border-2 overflow-hidden rounded-xs cursor-pointer transition-all ${
+                    activeImage === img
+                      ? "border-[#173D2B] ring-1 ring-[#173D2B]"
+                      : "border-white/80 opacity-80 hover:opacity-100"
+                  }`}
+                  title={`View angle ${idx + 1}`}
+                >
+                  <Image
+                    src={encodeURI(img)}
+                    alt={`Thumb ${idx + 1}`}
+                    fill
+                    sizes="44px"
+                    className="object-cover"
+                  />
+                </button>
+              ))}
             </div>
           )}
         </div>
 
         {/* Product Details */}
-        <div className="p-6 sm:p-8 flex-1 overflow-y-auto flex flex-col justify-between space-y-5 bg-[#FFFFFF]">
+        <div className="p-4 sm:p-7 flex-1 overflow-y-auto flex flex-col justify-between space-y-4 sm:space-y-5 bg-[#FFFFFF]">
           <div className="space-y-3">
             <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[#B89A5A] font-semibold">
               <Sparkles className="w-3 h-3 text-[#B89A5A]" />

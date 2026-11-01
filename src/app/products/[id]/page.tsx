@@ -51,6 +51,21 @@ function ProductDetailContent() {
   const [activeImage, setActiveImage] = useState<string>("");
   const [addedNotice, setAddedNotice] = useState(false);
 
+  const allImages = React.useMemo(() => {
+    if (!product) return [];
+    const list: string[] = [];
+    if (product.image) list.push(product.image);
+    if (product.secondaryImage && !list.includes(product.secondaryImage)) {
+      list.push(product.secondaryImage);
+    }
+    if (Array.isArray(product.gallery)) {
+      product.gallery.forEach((img) => {
+        if (img && !list.includes(img)) list.push(img);
+      });
+    }
+    return list;
+  }, [product]);
+
   useEffect(() => {
     async function fetchProduct() {
       if (!id) return;
@@ -138,7 +153,7 @@ function ProductDetailContent() {
           Home
         </Link>
         <ChevronRight className="w-3 h-3 text-[#B89A5A]" />
-        <Link href={`/#catalog-section`} className="hover:text-[#173D2B] transition-colors">
+        <Link href={`/category/${product.category.toLowerCase()}`} className="hover:text-[#173D2B] transition-colors">
           {product.category}
         </Link>
         <ChevronRight className="w-3 h-3 text-[#B89A5A]" />
@@ -174,38 +189,30 @@ function ProductDetailContent() {
             </div>
           </div>
 
-          {/* Secondary Thumbnail switchers */}
-          {product.secondaryImage && (
-            <div className="flex gap-3">
-              <button
-                onClick={() => setActiveImage(product.image)}
-                className={`relative w-20 h-26 bg-[#F3EBDD] border-2 overflow-hidden rounded-xs cursor-pointer ${
-                  activeImage === product.image ? "border-[#173D2B]" : "border-[#F3EBDD] opacity-75"
-                }`}
-              >
-                <Image
-                  src={encodeURI(product.image)}
-                  alt="Front Angle"
-                  fill
-                  className="object-cover"
-                />
-              </button>
-
-              <button
-                onClick={() => setActiveImage(product.secondaryImage!)}
-                className={`relative w-20 h-26 bg-[#F3EBDD] border-2 overflow-hidden rounded-xs cursor-pointer ${
-                  activeImage === product.secondaryImage
-                    ? "border-[#173D2B]"
-                    : "border-[#F3EBDD] opacity-75"
-                }`}
-              >
-                <Image
-                  src={encodeURI(product.secondaryImage)}
-                  alt="Detail Angle"
-                  fill
-                  className="object-cover"
-                />
-              </button>
+          {/* Multiple Image Gallery Thumbnails */}
+          {allImages.length > 1 && (
+            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
+              {allImages.map((imgUrl, idx) => (
+                <button
+                  key={`${imgUrl}-${idx}`}
+                  type="button"
+                  onClick={() => setActiveImage(imgUrl)}
+                  className={`relative w-20 h-26 shrink-0 bg-[#F3EBDD] border-2 overflow-hidden rounded-xs cursor-pointer transition-all ${
+                    activeImage === imgUrl
+                      ? "border-[#173D2B] ring-1 ring-[#173D2B]"
+                      : "border-[#F3EBDD] opacity-75 hover:opacity-100"
+                  }`}
+                  title={`View angle ${idx + 1}`}
+                >
+                  <Image
+                    src={encodeURI(imgUrl)}
+                    alt={`${product.name} angle ${idx + 1}`}
+                    fill
+                    sizes="80px"
+                    className="object-cover"
+                  />
+                </button>
+              ))}
             </div>
           )}
         </div>

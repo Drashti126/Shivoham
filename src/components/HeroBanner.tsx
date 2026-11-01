@@ -1,163 +1,95 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { ArrowRight, Sparkles, ShieldCheck, Truck, Scissors, Play, X } from "lucide-react";
-import { BUSINESS_CONTACT } from "@/data/sampleProducts";
+import Link from "next/link";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function HeroBanner() {
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
-
   return (
-    <>
-      <section className="relative bg-[#FAF7F0] border-b border-[#F3EBDD] overflow-hidden">
-        {/* Background delicate watermark pattern */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#173D2B_1px,transparent_1px)] [background-size:16px_16px]" />
+    <section className="relative w-full bg-[#FAF7F0] border-b border-[#F3EBDD] overflow-hidden">
+      {/* Decorative Subtle Background Glow */}
+      <div className="absolute top-0 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-[#B89A5A]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-60 sm:w-80 h-60 sm:h-80 bg-[#173D2B]/5 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-            {/* Left: Editorial Campaign Text (7 cols) */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF7F0] border border-[#B89A5A]/50 text-[#173D2B] text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-semibold">
-                <Sparkles className="w-3 h-3 text-[#B89A5A]" />
-                <span>THE ROYAL FESTIVE EDIT &apos;26</span>
-              </div>
-
-              <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-[#173D2B] font-normal leading-[1.12] tracking-tight">
-                Timeless Heritage. <br />
-                <span className="italic font-light text-[#B89A5A]">
-                  Woven into Modern Grace.
-                </span>
-              </h1>
-
-              <p className="text-sm sm:text-base text-[#242424]/80 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                Discover our signature collection of handcrafted sarees, festive dresses, and artisanal kurtis. Hand-selected weaves celebrating the living textile crafts of India.
-              </p>
-
-              {/* CTAs (Libas + Surekhi Style) */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4">
-                <a
-                  href="#catalog-section"
-                  className="w-full sm:w-auto px-8 py-4 bg-[#173D2B] hover:bg-[#0f291d] text-[#FAF7F0] text-xs uppercase tracking-[0.2em] font-medium transition-all shadow-md flex items-center justify-center gap-2 group cursor-pointer"
-                >
-                  <span>EXPLORE ALL 78 DESIGNS</span>
-                  <ArrowRight className="w-4 h-4 text-[#B89A5A] group-hover:translate-x-1.5 transition-transform" />
-                </a>
-
-                <button
-                  onClick={() => setIsVideoOpen(true)}
-                  className="w-full sm:w-auto px-6 py-4 bg-[#FFFFFF] border border-[#173D2B] text-[#173D2B] hover:bg-[#173D2B] hover:text-[#FAF7F0] text-xs uppercase tracking-[0.2em] font-medium transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs group"
-                >
-                  <Play className="w-3.5 h-3.5 fill-[#B89A5A] text-[#B89A5A] group-hover:fill-[#FAF7F0] group-hover:text-[#FAF7F0]" />
-                  <span>WATCH MODEL DRAPE</span>
-                </button>
-              </div>
-
-              {/* Luxury Trust Pillars (Surekhi Style) */}
-              <div className="pt-4 border-t border-[#F3EBDD] grid grid-cols-3 gap-3 text-left max-w-lg mx-auto lg:mx-0">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#B89A5A] shrink-0" />
-                  <span className="text-[11px] text-[#242424]/75 font-medium leading-tight">
-                    100% Authentic Handcraft
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Scissors className="w-4 h-4 text-[#B89A5A] shrink-0" />
-                  <span className="text-[11px] text-[#242424]/75 font-medium leading-tight">
-                    Bespoke Tailoring &amp; Sizing
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-[#B89A5A] shrink-0" />
-                  <span className="text-[11px] text-[#242424]/75 font-medium leading-tight">
-                    Pan-India Express Dispatch
-                  </span>
-                </div>
-              </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[480px] sm:min-h-[560px] lg:min-h-[640px] items-center py-8 sm:py-12 lg:py-0 gap-6 sm:gap-8 lg:gap-12">
+          
+          {/* Left: Brand Typography & Call to Action */}
+          <div className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left space-y-4 sm:space-y-6 z-10">
+            {/* Small uppercase eyebrow text */}
+            <div className="inline-flex items-center justify-center lg:justify-start gap-1.5 sm:gap-2 text-[11px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#B89A5A] font-semibold">
+              <Sparkles className="w-3.5 h-3.5 text-[#B89A5A]" />
+              <span>SHIVOHAM</span>
             </div>
 
-            {/* Right: Editorial Campaign Photograph (5 cols) */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-md lg:max-w-none aspect-[4/5] max-h-[560px] bg-[#F3EBDD] shadow-2xl border-4 border-[#FAF7F0] outline outline-1 outline-[#B89A5A]/40 group overflow-hidden">
-                <Image
-                  src={encodeURI("/images/saree/saree 3.png")}
-                  alt="SHIVOHAM Handcrafted Heritage Saree"
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 45vw"
-                  className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                />
+            {/* Refined Serif Heading */}
+            <h1 className="font-serif text-2xl sm:text-4xl lg:text-6xl text-[#173D2B] font-normal tracking-tight leading-tight">
+              Elegance in Every Thread
+            </h1>
 
-                {/* Floating Luxury Tag Badge */}
-                <div className="absolute top-4 right-4 bg-[#173D2B]/90 backdrop-blur-md border border-[#B89A5A]/50 text-[#FAF7F0] px-3.5 py-1.5 shadow-md">
-                  <span className="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#E5D2A5] block">
-                    VIRASAT EDITION
-                  </span>
-                  <span className="text-[11px] font-serif font-light text-[#FAF7F0]">
-                    Master Weaver Crafted
-                  </span>
-                </div>
+            {/* Short Description */}
+            <p className="text-xs sm:text-base lg:text-lg text-[#242424]/80 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              Discover Timeless Indian Ethnic Wear. Thoughtfully handcrafted sarees, graceful kurtis, and royal suit sets for life&apos;s celebrated moments.
+            </p>
 
-                {/* Bottom Video Trigger Tag */}
-                <div
-                  onClick={() => setIsVideoOpen(true)}
-                  className="absolute bottom-4 left-4 right-4 p-3 bg-[#FAF7F0]/95 backdrop-blur-sm text-center border border-[#F3EBDD] shadow-sm cursor-pointer hover:bg-[#FFFFFF] transition-colors flex items-center justify-between text-[11px]"
-                >
-                  <span className="font-serif text-[#173D2B] font-medium text-xs flex items-center gap-1.5">
-                    <Play className="w-3 h-3 fill-[#B89A5A] text-[#B89A5A]" />
-                    View Model Saree Walk
-                  </span>
-                  <span className="text-[#801426] font-semibold uppercase tracking-wider text-[10px]">
-                    13 Sarees Online
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Model Video Showcase Modal */}
-      {isVideoOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#143426]/70 backdrop-blur-md animate-in fade-in duration-200"
-        >
-          <div
-            className="fixed inset-0"
-            onClick={() => setIsVideoOpen(false)}
-          />
-
-          <div className="relative w-full max-w-lg bg-[#FAF7F0] border border-[#F3EBDD] shadow-2xl overflow-hidden z-10 flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-[#F3EBDD] bg-[#FFFFFF]">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#B89A5A]" />
-                <span className="font-serif text-sm font-medium text-[#173D2B]">
-                  SHIVOHAM Model Saree Showcase
-                </span>
-              </div>
-              <button
-                onClick={() => setIsVideoOpen(false)}
-                className="p-1 text-[#242424]/70 hover:text-[#173D2B] cursor-pointer"
+            {/* Premium Call to Action Button */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
+              <Link
+                href="/products"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 sm:px-10 py-3 sm:py-4 bg-[#173D2B] text-[#FAF7F0] hover:bg-[#123022] text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold transition-all duration-300 rounded-xs shadow-md hover:shadow-xl cursor-pointer group"
               >
-                <X className="w-5 h-5" />
-              </button>
+                <span>EXPLORE COLLECTION</span>
+                <ArrowRight className="w-4 h-4 text-[#B89A5A] group-hover:translate-x-1 transition-transform" />
+              </Link>
+
+              <Link
+                href="#categories"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3.5 text-xs sm:text-sm uppercase tracking-[0.18em] font-medium text-[#173D2B] hover:text-[#B89A5A] transition-colors border-b border-transparent hover:border-[#B89A5A]"
+              >
+                <span>View Categories</span>
+              </Link>
             </div>
 
-            <div className="relative aspect-[9/16] max-h-[70vh] bg-black">
-              <video
-                src={encodeURI("/images/saree/Model_walking_in_saree_video_20261021110204.mp4")}
-                controls
-                autoPlay
-                loop
-                playsInline
-                className="w-full h-full object-contain"
-              />
+            {/* Subtle Brand Trust Note */}
+            <div className="pt-3 sm:pt-4 border-t border-[#F3EBDD]/80 flex items-center justify-center lg:justify-start gap-4 sm:gap-6 text-[11px] sm:text-xs text-[#242424]/70">
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B89A5A]" />
+                <span>100% Pure Cotton Sarees</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B89A5A]" />
+                <span>Artisanal Kurtis &amp; Suits</span>
+              </div>
             </div>
           </div>
+
+          {/* Right: Beautiful Indian Ethnic Fashion Model */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end items-center relative">
+            <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-md aspect-[3/4] rounded-xs overflow-hidden shadow-xl sm:shadow-2xl border-2 sm:border-4 border-[#FAF7F0] outline outline-1 outline-[#B89A5A]/40 bg-[#F3EBDD]">
+              <Image
+                src={encodeURI("/images/saree/saree 10.png")}
+                alt="SHIVOHAM Indian Ethnic Wear - Elegance in Every Thread"
+                fill
+                priority
+                sizes="(max-width: 640px) 280px, (max-width: 1024px) 380px, 40vw"
+                className="object-cover object-top hover:scale-103 transition-transform duration-700"
+              />
+
+              {/* Subtle Luxury Corner Stamp */}
+              <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 bg-[#173D2B]/90 backdrop-blur-xs px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xs border border-[#B89A5A]/50 text-right">
+                <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] font-semibold text-[#E5D2A5] block">
+                  ATELIER EDIT
+                </span>
+                <span className="text-[10px] sm:text-[11px] font-serif text-[#FAF7F0]">
+                  Handloom Heritage
+                </span>
+              </div>
+            </div>
+          </div>
+
         </div>
-      )}
-    </>
+      </div>
+    </section>
   );
 }

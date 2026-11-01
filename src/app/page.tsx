@@ -8,13 +8,8 @@ import HeroBanner from "@/components/HeroBanner";
 import CategoryShowcase from "@/components/CategoryShowcase";
 import FreshArrivals from "@/components/FreshArrivals";
 import TrendingCollection from "@/components/TrendingCollection";
-import ProductCatalog from "@/components/ProductCatalog";
-import HeritageCrafts from "@/components/HeritageCrafts";
-import VoucherSection from "@/components/VoucherSection";
-import PromotionalBanner from "@/components/PromotionalBanner";
-import CustomerReviews from "@/components/CustomerReviews";
-import BrandStory from "@/components/BrandStory";
-import WhatsAppBanner from "@/components/WhatsAppBanner";
+import WhyChooseShivoham from "@/components/WhyChooseShivoham";
+import InstagramCollection from "@/components/InstagramCollection";
 import Footer from "@/components/Footer";
 import SearchModal from "@/components/SearchModal";
 import CartDrawer from "@/components/CartDrawer";
@@ -29,51 +24,36 @@ export default function HomePage() {
         {/* Top Announcement Bar */}
         <AnnouncementBar />
 
-        {/* Luxury Header with Mega-Menu & Currency Switcher */}
+        {/* 1. Elegant Header */}
         <Header />
 
         <main className="flex-1">
-          {/* 1. Lookbook Hero Banner */}
+          {/* 2. One Large Hero Banner */}
           <HeroBanner />
 
-          {/* 2. Shop By Category: Sarees, Dresses, Kurtis */}
+          {/* 3. Three Category Cards: Sarees, Kurtis, Suits */}
           <CategoryShowcase />
 
-          {/* 3. New Arrivals Section */}
+          {/* 4. New Arrivals: Maximum 4 Products */}
           <FreshArrivals />
 
-          {/* 4. Best Sellers Section */}
+          {/* 5. Best Sellers: Maximum 4 Products */}
           <TrendingCollection />
 
-          {/* 5. Featured Products & Atelier (Category, Price & Availability Filters) */}
-          <ProductCatalog />
+          {/* 6. Why Choose SHIVOHAM */}
+          <WhyChooseShivoham />
 
-          {/* 6. Heirloom Crafts of India */}
-          <HeritageCrafts />
-
-          {/* 7. Clickable Voucher Codes */}
-          <VoucherSection />
-
-          {/* 8. Promotional Editorial Campaign */}
-          <PromotionalBanner />
-
-          {/* 9. Verified Client Love & Trust Badges */}
-          <CustomerReviews />
-
-          {/* 10. The Shivoham Philosophy & Heritage Story */}
-          <BrandStory />
-
-          {/* 11. WhatsApp Concierge Touchpoint */}
-          <WhatsAppBanner />
+          {/* 7. Instagram Collection: Display only 4 selected images */}
+          <InstagramCollection />
         </main>
 
-        {/* Boutique Footer */}
+        {/* 8. Elegant Footer */}
         <Footer />
 
-        {/* Floating WhatsApp Contact Button on all public views */}
+        {/* Floating WhatsApp Contact Button */}
         <FloatingWhatsApp />
 
-        {/* Interactive Drawers & Modals */}
+        {/* Drawers & Modals */}
         <SearchModal />
         <CartDrawer />
         <WishlistDrawer />

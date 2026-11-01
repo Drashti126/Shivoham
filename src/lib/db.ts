@@ -3,7 +3,7 @@ import path from "path";
 import { Product, Order, Customer, CustomerAddress } from "@/types";
 import { ALL_PRODUCTS } from "@/data/sampleProducts";
 
-interface DatabaseSchema {
+export interface DatabaseSchema {
   products: Product[];
   orders: Order[];
   customers?: Customer[];
@@ -11,47 +11,165 @@ interface DatabaseSchema {
 
 const DB_DIR = path.join(process.cwd(), "data");
 const DB_PATH = path.join(DB_DIR, "database.json");
+const TMP_PATH = path.join("/tmp", "shivoham_database.json");
 
-// Ensure DB exists and is seeded
-function initDb(): Required<DatabaseSchema> {
+// In-memory runtime cache for serverless lifecycle
+let cachedDb: Required<DatabaseSchema> | null = null;
+let isCloudSynced = false;
+
+// KV Cloud Configuration (Vercel KV or Upstash Redis REST)
+function getKvConfig() {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (url && token) {
+    return { url: url.replace(/\/$/, ""), token };
+  }
+  return null;
+}
+
+// Initial seed data generator
+function getSeededData(): Required<DatabaseSchema> {
+  const seededProducts: Product[] = ALL_PRODUCTS.map((p) => ({
+    ...p,
+    isPublished: true,
+    inStock: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }));
+
+  return {
+    products: seededProducts,
+    orders: [],
+    customers: [],
+  };
+}
+
+// Ensure DB exists and is seeded in memory / disk
+export function initDb(): Required<DatabaseSchema> {
+  if (cachedDb) {
+    return cachedDb;
+  }
+
+  // 1. Try reading from primary local database.json
+  try {
+    if (fs.existsSync(DB_PATH)) {
+      const raw = fs.readFileSync(DB_PATH, "utf-8");
+      const parsed = JSON.parse(raw);
+      cachedDb = {
+        products: Array.isArray(parsed.products) ? parsed.products : [],
+        orders: Array.isArray(parsed.orders) ? parsed.orders : [],
+        customers: Array.isArray(parsed.customers) ? parsed.customers : [],
+      };
+      return cachedDb;
+    }
+  } catch (err) {
+    console.warn("Could not read from primary database file:", err);
+  }
+
+  // 2. Try reading from /tmp fallback (on serverless instances)
+  try {
+    if (fs.existsSync(TMP_PATH)) {
+      const raw = fs.readFileSync(TMP_PATH, "utf-8");
+      const parsed = JSON.parse(raw);
+      cachedDb = {
+        products: Array.isArray(parsed.products) ? parsed.products : [],
+        orders: Array.isArray(parsed.orders) ? parsed.orders : [],
+        customers: Array.isArray(parsed.customers) ? parsed.customers : [],
+      };
+      return cachedDb;
+    }
+  } catch {
+    // Continue to seed
+  }
+
+  // 3. Seed initial database
+  const initialData = getSeededData();
+  cachedDb = initialData;
+
+  // Attempt to write seeded data to disk if writable
   try {
     if (!fs.existsSync(DB_DIR)) {
       fs.mkdirSync(DB_DIR, { recursive: true });
     }
+    fs.writeFileSync(DB_PATH, JSON.stringify(initialData, null, 2), "utf-8");
+  } catch {
+    // Read-only filesystem (e.g. Vercel Lambda) - write to /tmp
+    try {
+      fs.writeFileSync(TMP_PATH, JSON.stringify(initialData, null, 2), "utf-8");
+    } catch {
+      // In-memory only
+    }
+  }
 
-    if (!fs.existsSync(DB_PATH)) {
-      const seededProducts: Product[] = ALL_PRODUCTS.map((p) => ({
-        ...p,
-        isPublished: true,
-        inStock: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
+  return cachedDb;
+}
 
-      const initialData: Required<DatabaseSchema> = {
-        products: seededProducts,
-        orders: [],
-        customers: [],
-      };
+// Asynchronously pull from Vercel KV / Upstash if configured
+export async function syncWithCloudDb(): Promise<void> {
+  const kv = getKvConfig();
+  if (!kv || isCloudSynced) return;
 
-      fs.writeFileSync(DB_PATH, JSON.stringify(initialData, null, 2), "utf-8");
-      return initialData;
+  try {
+    const res = await fetch(`${kv.url}/get/shivoham_db`, {
+      headers: { Authorization: `Bearer ${kv.token}` },
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (json && json.result) {
+        const parsed = typeof json.result === "string" ? JSON.parse(json.result) : json.result;
+        if (parsed && Array.isArray(parsed.products)) {
+          cachedDb = {
+            products: parsed.products,
+            orders: Array.isArray(parsed.orders) ? parsed.orders : [],
+            customers: Array.isArray(parsed.customers) ? parsed.customers : [],
+          };
+          isCloudSynced = true;
+          return;
+        }
+      }
     }
 
-    const raw = fs.readFileSync(DB_PATH, "utf-8");
-    const parsed = JSON.parse(raw);
-    return {
-      products: Array.isArray(parsed.products) ? parsed.products : [],
-      orders: Array.isArray(parsed.orders) ? parsed.orders : [],
-      customers: Array.isArray(parsed.customers) ? parsed.customers : [],
-    };
-  } catch (error) {
-    console.error("Error reading database:", error);
-    return { products: [], orders: [], customers: [] };
+    // If cloud KV is empty, seed it with our current database
+    if (cachedDb) {
+      await pushToCloudDb(cachedDb);
+      isCloudSynced = true;
+    }
+  } catch (err) {
+    console.error("Cloud DB sync failed:", err);
   }
 }
 
-function writeDb(data: DatabaseSchema): void {
+// Push to Vercel KV / Upstash in background
+async function pushToCloudDb(data: DatabaseSchema): Promise<void> {
+  const kv = getKvConfig();
+  if (!kv) return;
+
+  try {
+    await fetch(`${kv.url}/set/shivoham_db`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${kv.token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(JSON.stringify(data)),
+    });
+  } catch (err) {
+    console.error("Failed to push data to cloud KV:", err);
+  }
+}
+
+export function writeDb(data: DatabaseSchema): void {
+  // Always update in-memory cache first
+  cachedDb = {
+    products: data.products || [],
+    orders: data.orders || [],
+    customers: data.customers || [],
+  };
+
+  // Try writing to primary DB_PATH (local development)
+  let writeSucceeded = false;
   try {
     if (!fs.existsSync(DB_DIR)) {
       fs.mkdirSync(DB_DIR, { recursive: true });
@@ -59,9 +177,22 @@ function writeDb(data: DatabaseSchema): void {
     const tempPath = `${DB_PATH}.tmp`;
     fs.writeFileSync(tempPath, JSON.stringify(data, null, 2), "utf-8");
     fs.renameSync(tempPath, DB_PATH);
-  } catch (error) {
-    console.error("Error writing database:", error);
-    throw error;
+    writeSucceeded = true;
+  } catch (localErr: any) {
+    // On Vercel serverless, process.cwd() is read-only (EROFS).
+    // Write to /tmp so other functions in the same warm lambda can access it
+    try {
+      fs.writeFileSync(TMP_PATH, JSON.stringify(data, null, 2), "utf-8");
+      writeSucceeded = true;
+    } catch (tmpErr) {
+      console.warn("Could not write to /tmp fallback:", tmpErr);
+    }
+  }
+
+  // Trigger cloud sync asynchronously without blocking
+  const kv = getKvConfig();
+  if (kv) {
+    pushToCloudDb(data).catch((e) => console.error("Cloud KV push error:", e));
   }
 }
 
@@ -87,6 +218,7 @@ export function createProduct(productData: Omit<Product, "id">): Product {
     id: newId,
     isPublished: productData.isPublished !== undefined ? productData.isPublished : true,
     inStock: productData.inStock !== undefined ? productData.inStock : true,
+    gallery: Array.isArray(productData.gallery) ? productData.gallery : undefined,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -218,24 +350,24 @@ export function linkOrdersToCustomer(customerId: string, email?: string, phone?:
 // Customer Operations
 export function getCustomers(): Customer[] {
   const db = initDb();
-  return db.customers;
+  return db.customers || [];
 }
 
 export function getCustomerById(id: string): Customer | null {
   const db = initDb();
-  return db.customers.find((c) => c.id === id) || null;
+  return db.customers?.find((c) => c.id === id) || null;
 }
 
 export function getCustomerByEmail(email: string): Customer | null {
   const db = initDb();
   const normalized = email.toLowerCase().trim();
-  return db.customers.find((c) => c.email.toLowerCase().trim() === normalized) || null;
+  return db.customers?.find((c) => c.email.toLowerCase().trim() === normalized) || null;
 }
 
 export function getCustomerByPhone(phone: string): Customer | null {
   const db = initDb();
   const clean = phone.replace(/\D/g, "");
-  return db.customers.find((c) => c.phone.replace(/\D/g, "") === clean) || null;
+  return db.customers?.find((c) => c.phone.replace(/\D/g, "") === clean) || null;
 }
 
 export function createCustomer(data: Omit<Customer, "id" | "createdAt" | "updatedAt">): Customer {
@@ -250,6 +382,7 @@ export function createCustomer(data: Omit<Customer, "id" | "createdAt" | "update
     updatedAt: now,
   };
 
+  if (!db.customers) db.customers = [];
   db.customers.push(newCustomer);
   writeDb(db);
 
@@ -261,6 +394,7 @@ export function createCustomer(data: Omit<Customer, "id" | "createdAt" | "update
 
 export function updateCustomer(id: string, patch: Partial<Customer>): Customer | null {
   const db = initDb();
+  if (!db.customers) db.customers = [];
   const index = db.customers.findIndex((c) => c.id === id);
   if (index === -1) return null;
 
@@ -276,7 +410,7 @@ export function updateCustomer(id: string, patch: Partial<Customer>): Customer |
 
 export function addCustomerAddress(customerId: string, address: Omit<CustomerAddress, "id">): Customer | null {
   const db = initDb();
-  const customer = db.customers.find((c) => c.id === customerId);
+  const customer = db.customers?.find((c) => c.id === customerId);
   if (!customer) return null;
 
   const newAddress: CustomerAddress = {
@@ -298,7 +432,7 @@ export function addCustomerAddress(customerId: string, address: Omit<CustomerAdd
 
 export function deleteCustomerAddress(customerId: string, addressId: string): Customer | null {
   const db = initDb();
-  const customer = db.customers.find((c) => c.id === customerId);
+  const customer = db.customers?.find((c) => c.id === customerId);
   if (!customer) return null;
 
   customer.addresses = customer.addresses.filter((a) => a.id !== addressId);
@@ -309,7 +443,7 @@ export function deleteCustomerAddress(customerId: string, addressId: string): Cu
 
 export function syncCustomerWishlist(customerId: string, wishlist: string[]): Customer | null {
   const db = initDb();
-  const customer = db.customers.find((c) => c.id === customerId);
+  const customer = db.customers?.find((c) => c.id === customerId);
   if (!customer) return null;
 
   const merged = Array.from(new Set([...customer.wishlist, ...wishlist]));

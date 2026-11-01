@@ -66,17 +66,33 @@ export default function AdminDashboardPage() {
     originalPrice: "",
     image: "",
     secondaryImage: "",
+    gallery: [] as string[],
     badge: "",
     description: "",
-    sizes: ["Free Size (6.3m with Blouse)"],
+    sizes: ["Free Size"],
     isPublished: true,
     inStock: true,
   });
 
+  const [customImageUrl, setCustomImageUrl] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
   const [savingProduct, setSavingProduct] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const modalImages = useMemo(() => {
+    const list: string[] = [];
+    if (modalForm.image) list.push(modalForm.image);
+    if (modalForm.secondaryImage && !list.includes(modalForm.secondaryImage)) {
+      list.push(modalForm.secondaryImage);
+    }
+    if (Array.isArray(modalForm.gallery)) {
+      modalForm.gallery.forEach((g) => {
+        if (g && !list.includes(g)) list.push(g);
+      });
+    }
+    return list;
+  }, [modalForm.image, modalForm.secondaryImage, modalForm.gallery]);
 
   // Check authentication
   useEffect(() => {
@@ -204,9 +220,54 @@ export default function AdminDashboardPage() {
     }
   };
 
+  // Image Helpers
+  const handleSetPrimaryImage = (img: string) => {
+    setModalForm((prev) => {
+      const remaining = modalImages.filter((x) => x !== img);
+      return {
+        ...prev,
+        image: img,
+        secondaryImage: remaining[0] || "",
+        gallery: remaining.slice(1),
+      };
+    });
+  };
+
+  const handleRemoveImage = (img: string) => {
+    setModalForm((prev) => {
+      const remaining = modalImages.filter((x) => x !== img);
+      return {
+        ...prev,
+        image: remaining[0] || "",
+        secondaryImage: remaining[1] || "",
+        gallery: remaining.slice(2),
+      };
+    });
+  };
+
+  const handleAddImageUrl = () => {
+    if (!customImageUrl.trim()) return;
+    const url = customImageUrl.trim();
+    setModalForm((prev) => {
+      if (modalImages.includes(url)) return prev;
+      if (!prev.image) {
+        return { ...prev, image: url };
+      }
+      if (!prev.secondaryImage) {
+        return { ...prev, secondaryImage: url };
+      }
+      return {
+        ...prev,
+        gallery: [...(prev.gallery || []), url],
+      };
+    });
+    setCustomImageUrl("");
+  };
+
   // Open Add Modal
   const handleOpenAddModal = () => {
     setEditingProduct(null);
+    setCustomImageUrl("");
     setModalForm({
       name: "",
       category: "Sarees",
@@ -215,10 +276,11 @@ export default function AdminDashboardPage() {
       originalPrice: "",
       image: "",
       secondaryImage: "",
+      gallery: [],
       badge: "New Arrival",
       description:
         "Masterfully crafted Indian ethnic design. Detailed with exquisite needlecraft and rich border work.",
-      sizes: ["Free Size (6.3m with Blouse)"],
+      sizes: ["Free Size"],
       isPublished: true,
       inStock: true,
     });
@@ -229,6 +291,7 @@ export default function AdminDashboardPage() {
   // Open Edit Modal
   const handleOpenEditModal = (product: Product) => {
     setEditingProduct(product);
+    setCustomImageUrl("");
     setModalForm({
       name: product.name,
       category: product.category,
@@ -237,6 +300,7 @@ export default function AdminDashboardPage() {
       originalPrice: product.originalPrice ? String(product.originalPrice) : "",
       image: product.image,
       secondaryImage: product.secondaryImage || "",
+      gallery: Array.isArray(product.gallery) ? product.gallery : [],
       badge: product.badge || "",
       description: product.description || "",
       sizes: product.sizes || ["Free Size"],
@@ -267,20 +331,17 @@ export default function AdminDashboardPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
-        if (data.urls && data.urls.length > 1) {
-          setModalForm((prev) => ({
+      if (res.ok && data.success && Array.isArray(data.urls) && data.urls.length > 0) {
+        setModalForm((prev) => {
+          const current = [prev.image, prev.secondaryImage, ...(prev.gallery || [])].filter(Boolean);
+          const merged = Array.from(new Set([...current, ...data.urls]));
+          return {
             ...prev,
-            image: data.urls[0],
-            secondaryImage: data.urls[1],
-          }));
-        } else if (data.url) {
-          setModalForm((prev) => ({
-            ...prev,
-            image: prev.image ? prev.image : data.url,
-            secondaryImage: prev.image ? data.url : prev.secondaryImage,
-          }));
-        }
+            image: merged[0] || "",
+            secondaryImage: merged[1] || "",
+            gallery: merged.slice(2),
+          };
+        });
       } else {
         setModalError(data.error || "Failed to upload image");
       }
@@ -288,6 +349,7 @@ export default function AdminDashboardPage() {
       setModalError("Network error during file upload");
     } finally {
       setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -305,7 +367,7 @@ export default function AdminDashboardPage() {
       return;
     }
     if (!modalForm.image.trim()) {
-      setModalError("Please provide a product image or upload one");
+      setModalError("Please provide at least one product image or upload one");
       return;
     }
 
@@ -320,6 +382,7 @@ export default function AdminDashboardPage() {
         originalPrice: modalForm.originalPrice ? Number(modalForm.originalPrice) : undefined,
         image: modalForm.image.trim(),
         secondaryImage: modalForm.secondaryImage.trim() || undefined,
+        gallery: modalForm.gallery && modalForm.gallery.length > 0 ? modalForm.gallery : undefined,
         badge: modalForm.badge.trim() || undefined,
         description: modalForm.description.trim(),
         sizes: modalForm.sizes,
@@ -429,7 +492,9 @@ export default function AdminDashboardPage() {
         p.id.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchCategory =
-        categoryFilter === "All" || p.category === categoryFilter;
+        categoryFilter === "All" ||
+        p.category === categoryFilter ||
+        (categoryFilter === "Suits" && (p.category as string) === "Dresses");
 
       const matchStock =
         stockFilter === "All" ||
@@ -449,12 +514,14 @@ export default function AdminDashboardPage() {
   const metrics = useMemo(() => {
     const total = products.length;
     const sarees = products.filter((p) => p.category === "Sarees").length;
-    const dresses = products.filter((p) => p.category === "Dresses").length;
     const kurtis = products.filter((p) => p.category === "Kurtis").length;
+    const suits = products.filter(
+      (p) => p.category === "Suits" || (p.category as string) === "Dresses"
+    ).length;
     const published = products.filter((p) => p.isPublished !== false).length;
     const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
 
-    return { total, sarees, dresses, kurtis, published, totalOrders: orders.length, totalRevenue };
+    return { total, sarees, suits, dresses: suits, kurtis, published, totalOrders: orders.length, totalRevenue };
   }, [products, orders]);
 
   if (checkingAuth) {
@@ -546,13 +613,13 @@ export default function AdminDashboardPage() {
 
           <div className="bg-[#FFFFFF] border border-[#F3EBDD] p-4 shadow-2xs">
             <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold block">
-              Dresses
+              Suits
             </span>
             <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173D2B]">
-              {metrics.dresses}
+              {metrics.suits}
             </span>
             <span className="text-[10px] text-[#242424]/60 block mt-0.5">
-              Anarkalis &amp; Gowns
+              2 &amp; 3-Piece Sets
             </span>
           </div>
 
@@ -657,8 +724,8 @@ export default function AdminDashboardPage() {
                 >
                   <option value="All">All Categories</option>
                   <option value="Sarees">Sarees ({metrics.sarees})</option>
-                  <option value="Dresses">Dresses ({metrics.dresses})</option>
                   <option value="Kurtis">Kurtis ({metrics.kurtis})</option>
+                  <option value="Suits">Suits ({metrics.suits})</option>
                 </select>
 
                 {/* Stock Filter */}
@@ -1217,91 +1284,137 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              {/* Image Upload directly from Computer or Mobile */}
-              <div className="space-y-2 border border-[#F3EBDD] bg-[#FAF7F0] p-4 rounded-xs">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-[#173D2B]">
-                    Product Images (Upload or Path) *
-                  </label>
+              {/* Product Images (Multiple Upload & URL) */}
+              <div className="space-y-3 border border-[#F3EBDD] bg-[#FAF7F0] p-4 rounded-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <label className="text-xs uppercase tracking-wider font-semibold text-[#173D2B] block">
+                      Product Images *
+                    </label>
+                    <span className="text-[11px] text-[#242424]/70">
+                      Upload photos from your computer or mobile, or paste direct URLs.
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadingImage}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#173D2B] hover:bg-[#0f291d] text-[#FAF7F0] text-xs font-semibold uppercase tracking-wider rounded-xs cursor-pointer shadow-xs disabled:opacity-60 transition-colors"
+                    >
+                      <Upload className="w-3.5 h-3.5 text-[#B89A5A]" />
+                      <span>{uploadingImage ? "Uploading..." : "Upload from Device"}</span>
+                    </button>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+
+                {/* Add by URL input */}
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={customImageUrl}
+                    onChange={(e) => setCustomImageUrl(e.target.value)}
+                    placeholder="Or paste image URL (https://... or /images/...)"
+                    className="flex-1 px-3 py-1.5 text-xs bg-[#FFFFFF] border border-[#F3EBDD] rounded-xs focus:outline-none focus:border-[#173D2B]"
+                  />
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploadingImage}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#173D2B] hover:bg-[#0f291d] text-[#FAF7F0] text-xs font-semibold uppercase tracking-wider rounded-xs cursor-pointer shadow-xs disabled:opacity-60"
+                    onClick={handleAddImageUrl}
+                    className="px-3 py-1.5 bg-[#FAF7F0] hover:bg-[#F3EBDD] text-[#173D2B] border border-[#F3EBDD] text-xs font-semibold rounded-xs transition-colors cursor-pointer"
                   >
-                    <Upload className="w-3.5 h-3.5 text-[#B89A5A]" />
-                    <span>{uploadingImage ? "Uploading..." : "Upload from Device"}</span>
+                    + Add URL
                   </button>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  <div>
-                    <span className="text-[10px] text-[#242424]/70 block mb-1 font-medium">
-                      Primary Image URL / Path:
-                    </span>
-                    <input
-                      type="text"
-                      required
-                      value={modalForm.image}
-                      onChange={(e) => setModalForm({ ...modalForm, image: e.target.value })}
-                      placeholder="/images/saree/saree1.png or /uploads/..."
-                      className="w-full px-3 py-1.5 text-xs bg-[#FFFFFF] border border-[#F3EBDD] rounded-xs focus:outline-none font-mono"
-                    />
-                  </div>
+                {/* Gallery Thumbnails List */}
+                {modalImages.length > 0 ? (
+                  <div className="space-y-2 pt-2 border-t border-[#F3EBDD]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold">
+                        Attached Images ({modalImages.length})
+                      </span>
+                      <span className="text-[10px] text-[#242424]/60">
+                        First image is Primary (cover photo).
+                      </span>
+                    </div>
 
-                  <div>
-                    <span className="text-[10px] text-[#242424]/70 block mb-1 font-medium">
-                      Secondary Detail Image (Optional):
-                    </span>
-                    <input
-                      type="text"
-                      value={modalForm.secondaryImage}
-                      onChange={(e) => setModalForm({ ...modalForm, secondaryImage: e.target.value })}
-                      placeholder="/images/saree/saree 2.png or /uploads/..."
-                      className="w-full px-3 py-1.5 text-xs bg-[#FFFFFF] border border-[#F3EBDD] rounded-xs focus:outline-none font-mono"
-                    />
-                  </div>
-                </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {modalImages.map((img, idx) => {
+                        const isPrimary = idx === 0;
+                        const isSecondary = idx === 1;
 
-                {/* Image Previews */}
-                {(modalForm.image || modalForm.secondaryImage) && (
-                  <div className="flex gap-3 pt-2">
-                    {modalForm.image && (
-                      <div className="relative w-16 h-20 bg-white border border-[#F3EBDD] overflow-hidden">
-                        <Image
-                          src={encodeURI(modalForm.image)}
-                          alt="Primary Preview"
-                          fill
-                          sizes="64px"
-                          className="object-cover"
-                        />
-                        <span className="absolute bottom-0 inset-x-0 bg-black/60 text-[8px] text-white text-center">
-                          Primary
-                        </span>
-                      </div>
-                    )}
-                    {modalForm.secondaryImage && (
-                      <div className="relative w-16 h-20 bg-white border border-[#F3EBDD] overflow-hidden">
-                        <Image
-                          src={encodeURI(modalForm.secondaryImage)}
-                          alt="Secondary Preview"
-                          fill
-                          sizes="64px"
-                          className="object-cover"
-                        />
-                        <span className="absolute bottom-0 inset-x-0 bg-black/60 text-[8px] text-white text-center">
-                          Detail
-                        </span>
-                      </div>
-                    )}
+                        return (
+                          <div
+                            key={`${img}-${idx}`}
+                            className="group relative bg-[#FFFFFF] border border-[#F3EBDD] rounded-xs overflow-hidden p-1.5 flex flex-col items-center shadow-2xs"
+                          >
+                            <div className="relative w-full aspect-[3/4] bg-[#F3EBDD] overflow-hidden rounded-xs">
+                              <Image
+                                src={encodeURI(img)}
+                                alt={`Image ${idx + 1}`}
+                                fill
+                                sizes="120px"
+                                className="object-cover"
+                              />
+
+                              {/* Badge */}
+                              <span
+                                className={`absolute top-1 left-1 text-[8px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-2xs ${
+                                  isPrimary
+                                    ? "bg-[#173D2B] text-[#FAF7F0]"
+                                    : isSecondary
+                                    ? "bg-[#B89A5A] text-[#173D2B]"
+                                    : "bg-black/60 text-white"
+                                }`}
+                              >
+                                {isPrimary ? "Primary" : isSecondary ? "Hover / Detail" : `Angle #${idx + 1}`}
+                              </span>
+
+                              {/* Delete button */}
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveImage(img)}
+                                className="absolute top-1 right-1 w-5 h-5 bg-red-600/80 hover:bg-red-600 text-white flex items-center justify-center rounded-2xs cursor-pointer shadow-xs transition-colors"
+                                title="Remove image"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+
+                            {/* Actions under image */}
+                            <div className="w-full mt-1.5 flex items-center justify-between text-[10px]">
+                              {!isPrimary && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleSetPrimaryImage(img)}
+                                  className="text-[#173D2B] hover:text-[#B89A5A] font-medium underline text-[9px] cursor-pointer"
+                                >
+                                  Make Primary
+                                </button>
+                              )}
+                              <span className="text-[9px] text-gray-400 truncate ml-auto max-w-[80px]">
+                                {img.startsWith("data:") ? "Base64" : img.split("/").pop()}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-4 text-center border border-dashed border-[#F3EBDD] bg-white rounded-xs">
+                    <p className="text-xs text-[#242424]/60">
+                      No images added yet. Click &ldquo;Upload from Device&rdquo; or paste an image URL above.
+                    </p>
                   </div>
                 )}
               </div>
@@ -1327,7 +1440,7 @@ export default function AdminDashboardPage() {
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    "Free Size (6.3m with Blouse)",
+                    "Free Size",
                     "XS",
                     "S",
                     "M",

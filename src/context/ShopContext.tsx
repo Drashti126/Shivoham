@@ -55,6 +55,9 @@ interface ShopContextType {
   cartTotal: number;
   cartCount: number;
   allCatalogProducts: Product[];
+  refreshCatalog: () => Promise<void>;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
   customer: CustomerSessionUser | null;
   refreshCustomer: () => Promise<void>;
   logoutCustomer: () => Promise<void>;
@@ -78,6 +81,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   const [currency, setCurrencyState] = useState<Currency>(CURRENCIES[0]);
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
   const [allCatalogProducts, setAllCatalogProducts] = useState<Product[]>(ALL_PRODUCTS);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [customer, setCustomer] = useState<CustomerSessionUser | null>(null);
 
   const freeShippingThreshold = 1999;
@@ -86,20 +90,21 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   const whatsappBaseUrl = `https://wa.me/91${officialPhone}`;
 
   // Fetch products from database
-  useEffect(() => {
-    async function loadCatalog() {
-      try {
-        const res = await fetch("/api/products");
-        const data = await res.json();
-        if (res.ok && data.success && Array.isArray(data.products) && data.products.length > 0) {
-          setAllCatalogProducts(data.products);
-        }
-      } catch (err) {
-        console.warn("Could not load products from API, using fallback catalog:", err);
+  const refreshCatalog = useCallback(async () => {
+    try {
+      const res = await fetch("/api/products", { cache: "no-store" });
+      const data = await res.json();
+      if (res.ok && data.success && Array.isArray(data.products) && data.products.length > 0) {
+        setAllCatalogProducts(data.products);
       }
+    } catch (err) {
+      console.warn("Could not load products from API, using fallback catalog:", err);
     }
-    loadCatalog();
   }, []);
+
+  useEffect(() => {
+    refreshCatalog();
+  }, [refreshCatalog]);
 
   // Fetch authenticated customer session
   const refreshCustomer = useCallback(async () => {
@@ -142,9 +147,12 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       if (savedCart) setCart(JSON.parse(savedCart));
 
       const savedCurrency = localStorage.getItem("shivoham_currency");
-      if (savedCurrency) {
+      if (savedCurrency && savedCurrency === "INR") {
         const found = CURRENCIES.find((c) => c.code === savedCurrency);
         if (found) setCurrencyState(found);
+      } else {
+        setCurrencyState(CURRENCIES[0]);
+        localStorage.setItem("shivoham_currency", "INR");
       }
     } catch {}
   }, []);
@@ -170,11 +178,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   };
 
   const formatPrice = (amountInInr: number) => {
-    if (currency.code === "INR") {
-      return `₹${amountInInr.toLocaleString("en-IN")}`;
-    }
-    const converted = Math.round(amountInInr * currency.rate);
-    return `${currency.symbol}${converted.toLocaleString()}`;
+    return `₹${Math.round(amountInInr).toLocaleString("en-IN")}`;
   };
 
   const toggleWishlist = (productId: string) => {
@@ -377,6 +381,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
         cartTotal,
         cartCount,
         allCatalogProducts,
+        refreshCatalog,
+        searchQuery,
+        setSearchQuery,
         customer,
         refreshCustomer,
         logoutCustomer,

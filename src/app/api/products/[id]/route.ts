@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProductById, updateProduct, deleteProduct } from "@/lib/db";
+import { getProductById, updateProduct, deleteProduct, syncWithCloudDb } from "@/lib/db";
 import { checkAdminSessionFromRequest } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await syncWithCloudDb();
     const { id } = await params;
     const product = getProductById(id);
 
@@ -17,7 +21,15 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ success: true, product }, { status: 200 });
+    return NextResponse.json(
+      { success: true, product },
+      {
+        status: 200,
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      }
+    );
   } catch (error: any) {
     console.error("GET /api/products/[id] error:", error);
     return NextResponse.json(
@@ -40,6 +52,7 @@ export async function PUT(
       );
     }
 
+    await syncWithCloudDb();
     const { id } = await params;
     const body = await req.json();
 
@@ -53,6 +66,7 @@ export async function PUT(
     }
     if (body.image !== undefined) patch.image = body.image;
     if (body.secondaryImage !== undefined) patch.secondaryImage = body.secondaryImage || undefined;
+    if (body.gallery !== undefined) patch.gallery = Array.isArray(body.gallery) ? body.gallery : undefined;
     if (body.badge !== undefined) patch.badge = body.badge || undefined;
     if (body.description !== undefined) patch.description = body.description;
     if (body.sizes !== undefined) patch.sizes = body.sizes;
@@ -68,7 +82,15 @@ export async function PUT(
       );
     }
 
-    return NextResponse.json({ success: true, product: updated }, { status: 200 });
+    return NextResponse.json(
+      { success: true, product: updated },
+      {
+        status: 200,
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      }
+    );
   } catch (error: any) {
     console.error("PUT /api/products/[id] error:", error);
     return NextResponse.json(
@@ -91,6 +113,7 @@ export async function DELETE(
       );
     }
 
+    await syncWithCloudDb();
     const { id } = await params;
     const success = deleteProduct(id);
 
@@ -103,7 +126,12 @@ export async function DELETE(
 
     return NextResponse.json(
       { success: true, message: "Product deleted successfully" },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      }
     );
   } catch (error: any) {
     console.error("DELETE /api/products/[id] error:", error);

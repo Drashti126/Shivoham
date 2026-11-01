@@ -3,6 +3,8 @@ import fs from "fs";
 import path from "path";
 import { checkAdminSessionFromRequest } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const isAdmin = checkAdminSessionFromRequest(req);
@@ -36,12 +38,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-
     const savedUrls: string[] = [];
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
     for (const file of filesToProcess) {
       const bytes = await file.arrayBuffer();
@@ -50,16 +48,61 @@ export async function POST(req: NextRequest) {
       // Clean filename
       const originalName = file.name || "product-image.png";
       const ext = path.extname(originalName) || ".png";
+      const mimeType = file.type || (ext === ".jpg" || ext === ".jpeg" ? "image/jpeg" : "image/png");
       const baseName = path
         .basename(originalName, ext)
         .replace(/[^a-zA-Z0-9_-]/g, "_")
         .toLowerCase();
-
       const uniqueName = `${Date.now()}-${baseName}${ext}`;
-      const filePath = path.join(uploadsDir, uniqueName);
 
-      fs.writeFileSync(filePath, buffer);
-      savedUrls.push(`/uploads/${uniqueName}`);
+      // Target 1: Vercel Blob Storage (Production CDN)
+      if (blobToken) {
+        try {
+          const blobRes = await fetch(
+            `https://blob.vercel-storage.com/${uniqueName}`,
+            {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${blobToken}`,
+                "x-content-type": mimeType,
+              },
+              body: buffer,
+            }
+          );
+          if (blobRes.ok) {
+            const blobData = await blobRes.json();
+            if (blobData && blobData.url) {
+              savedUrls.push(blobData.url);
+              continue;
+            }
+          }
+        } catch (blobErr) {
+          console.warn("Vercel Blob upload failed, attempting fallback:", blobErr);
+        }
+      }
+
+      // Target 2: Local disk storage (Development)
+      let savedToLocal = false;
+      try {
+        const uploadsDir = path.join(process.cwd(), "public", "uploads");
+        if (!fs.existsSync(uploadsDir)) {
+          fs.mkdirSync(uploadsDir, { recursive: true });
+        }
+        const filePath = path.join(uploadsDir, uniqueName);
+        fs.writeFileSync(filePath, buffer);
+        savedUrls.push(`/uploads/${uniqueName}`);
+        savedToLocal = true;
+      } catch (fsErr) {
+        // Filesystem is read-only (EROFS) on Vercel Serverless
+        console.warn("Local storage write failed (expected on Vercel):", fsErr);
+      }
+
+      // Target 3: Built-in Data URL (Works everywhere on Vercel without external storage configuration)
+      if (!savedToLocal) {
+        const base64Data = buffer.toString("base64");
+        const dataUrl = `data:${mimeType};base64,${base64Data}`;
+        savedUrls.push(dataUrl);
+      }
     }
 
     return NextResponse.json(
