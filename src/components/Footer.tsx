@@ -129,13 +129,13 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://instagram.com"
+                href={BUSINESS_CONTACT.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 border border-[#F3EBDD] hover:border-[#B89A5A] text-[#173D2B] hover:text-[#B89A5A] rounded-xs text-xs font-medium tracking-wider transition-colors w-full justify-center bg-[#FFFFFF]"
               >
                 <InstagramIcon className="w-4 h-4 text-[#B89A5A]" />
-                <span>Instagram: @shivoham_ethnic</span>
+                <span>Instagram: {BUSINESS_CONTACT.instagramHandle}</span>
               </a>
             </div>
           </div>

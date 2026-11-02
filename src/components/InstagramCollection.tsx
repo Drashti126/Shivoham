@@ -56,10 +56,15 @@ export default function InstagramCollection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-2">
-          <div className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#B89A5A] font-semibold">
+          <a
+            href={BUSINESS_CONTACT.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#B89A5A] hover:text-[#173D2B] font-semibold transition-colors"
+          >
             <InstagramIcon className="w-3.5 h-3.5 text-[#B89A5A]" />
-            <span>@SHIVOHAM_ETHNIC</span>
-          </div>
+            <span>{BUSINESS_CONTACT.instagramHandle.toUpperCase()}</span>
+          </a>
           <h2 className="font-serif text-2xl sm:text-4xl text-[#173D2B] font-normal tracking-tight">
             Instagram Collection
           </h2>
@@ -72,9 +77,12 @@ export default function InstagramCollection() {
         {/* 4 Selected Boutique Images in 1 Row (2-col on mobile, 4-col on desktop) */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
           {instagramPosts.map((post) => (
-            <div
+            <a
               key={post.id}
-              className="group relative aspect-[3/4] bg-[#F3EBDD] border border-[#F3EBDD] overflow-hidden rounded-xs shadow-2xs hover:shadow-xl transition-all duration-300"
+              href={BUSINESS_CONTACT.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative aspect-[3/4] bg-[#F3EBDD] border border-[#F3EBDD] overflow-hidden rounded-xs shadow-2xs hover:shadow-xl transition-all duration-300 block cursor-pointer"
             >
               <Image
                 src={encodeURI(post.image)}
@@ -93,7 +101,7 @@ export default function InstagramCollection() {
               </div>
 
               {/* Desktop Instagram Hover Overlay */}
-              <div className="hidden sm:flex absolute inset-0 bg-[#173D2B]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-col items-center justify-center p-4 text-center text-[#FAF7F0]">
+              <div className="hidden sm:flex absolute inset-0 bg-[#173D2B]/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-col items-center justify-center p-4 text-center text-[#FAF7F0]">
                 <div className="w-10 h-10 rounded-full bg-[#FAF7F0]/20 flex items-center justify-center mb-2.5 border border-[#B89A5A]/50">
                   <InstagramIcon className="w-5 h-5 text-[#FAF7F0]" />
                 </div>
@@ -103,20 +111,33 @@ export default function InstagramCollection() {
                 <p className="text-xs text-[#FAF7F0]/90 font-serif line-clamp-2">
                   {post.caption}
                 </p>
+                <span className="mt-2 text-[10px] uppercase tracking-wider text-[#E5D2A5] font-semibold underline">
+                  View on Instagram
+                </span>
               </div>
-            </div>
+            </a>
           ))}
         </div>
 
         {/* Follow CTA */}
-        <div className="text-center mt-6 sm:mt-8">
+        <div className="text-center mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
+          <a
+            href={BUSINESS_CONTACT.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#FFFFFF] hover:bg-[#FAF7F0] border border-[#B89A5A]/60 text-[#173D2B] hover:text-[#B89A5A] text-xs uppercase tracking-[0.18em] font-semibold rounded-xs transition-colors shadow-2xs"
+          >
+            <InstagramIcon className="w-4 h-4 text-[#B89A5A]" />
+            <span>Follow @shivoham.attire</span>
+          </a>
+
           <a
             href={BUSINESS_CONTACT.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-semibold text-[#173D2B] hover:text-[#B89A5A] transition-colors border-b border-[#173D2B]/40 hover:border-[#B89A5A] pb-1"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-semibold text-[#173D2B] hover:text-[#B89A5A] transition-colors border-b border-[#173D2B]/40 hover:border-[#B89A5A] pb-0.5"
           >
-            <span>Connect With Our Stylists on WhatsApp</span>
+            <span>Connect on WhatsApp</span>
             <Sparkles className="w-3.5 h-3.5 text-[#B89A5A]" />
           </a>
         </div>

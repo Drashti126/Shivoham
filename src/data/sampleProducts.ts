@@ -7,6 +7,8 @@ export const BUSINESS_CONTACT = {
   phone: "9724984714",
   phoneFormatted: "+91 9724984714",
   whatsappUrl: "https://wa.me/919724984714",
+  instagramUrl: "https://www.instagram.com/shivoham.attire?mdxt=ejgxYzJuem9kNTFm",
+  instagramHandle: "@shivoham.attire",
   defaultGreeting:
     "Hi SHIVOHAM, I would like to inquire about your ethnic wear collections.",
 };

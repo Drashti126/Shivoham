@@ -417,6 +417,15 @@ export default function Header() {
               <MessageCircle className="w-4 h-4 text-emerald-600" />
               <span>Chat on WhatsApp</span>
             </a>
+            <a
+              href={BUSINESS_CONTACT.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 py-1.5 hover:text-[#173D2B]"
+            >
+              <span className="text-[#B89A5A] text-sm">📸</span>
+              <span>Instagram: {BUSINESS_CONTACT.instagramHandle}</span>
+            </a>
           </div>
         </div>
       )}
