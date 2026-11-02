@@ -1,94 +1,216 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+interface BannerSlide {
+  id: string;
+  image: string;
+  alt: string;
+  link: string;
+  title: string;
+}
+
+const BANNER_SLIDES: BannerSlide[] = [
+  {
+    id: "banner-1",
+    image: "/images/banners/ChatGPT Image Nov 2, 2026, 10_46_14 AM.png",
+    alt: "SHIVOHAM The Festive Collection - Elegant, Timeless, Exquisite",
+    link: "/category/suits",
+    title: "The Festive Collection",
+  },
+  {
+    id: "banner-2",
+    image: "/images/banners/ChatGPT Image Nov 2, 2026, 10_46_24 AM.png",
+    alt: "SHIVOHAM Royal Heritage Palace Collection - Handcrafted Indian Suits",
+    link: "/category/suits",
+    title: "Heritage Suit Sets",
+  },
+  {
+    id: "banner-3",
+    image: "/images/banners/ChatGPT Image Nov 2, 2026, 10_47_40 AM.png",
+    alt: "SHIVOHAM New Collection - Handloom Cotton Sarees",
+    link: "/category/sarees",
+    title: "New Collection Sarees",
+  },
+  {
+    id: "banner-4",
+    image: "/images/banners/ChatGPT Image Nov 2, 2026, 10_49_56 AM.png",
+    alt: "SHIVOHAM Grace in Simplicity - Timeless Charm Kurtis & Co-ord Sets",
+    link: "/category/kurtis",
+    title: "Grace in Simplicity",
+  },
+  {
+    id: "banner-5",
+    image: "/images/banners/ChatGPT Image Nov 2, 2026, 10_51_07 AM.png",
+    alt: "SHIVOHAM 2026 Collection Inspired by India's Heritage - Sarees, Suits & Ethnic Wear",
+    link: "/products",
+    title: "Heritage Collection",
+  },
+];
 
 export default function HeroBanner() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const totalSlides = BANNER_SLIDES.length;
+
+  const goToNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
+
+  const goToPrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
+
+  // Autoplay timer: Automatically slide every 5 seconds
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      goToNext();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [goToNext, isPaused]);
+
+  // Mobile Touch Swipe Handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = null;
+    setIsPaused(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    setIsPaused(false);
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 45;
+
+    if (distance > minSwipeDistance) {
+      goToNext();
+    } else if (distance < -minSwipeDistance) {
+      goToPrev();
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   return (
-    <section className="relative w-full bg-[#FAF7F0] border-b border-[#F3EBDD] overflow-hidden">
-      {/* Decorative Subtle Background Glow */}
-      <div className="absolute top-0 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-[#B89A5A]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-60 sm:w-80 h-60 sm:h-80 bg-[#173D2B]/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[480px] sm:min-h-[560px] lg:min-h-[640px] items-center py-8 sm:py-12 lg:py-0 gap-6 sm:gap-8 lg:gap-12">
-          
-          {/* Left: Brand Typography & Call to Action */}
-          <div className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left space-y-4 sm:space-y-6 z-10">
-            {/* Small uppercase eyebrow text */}
-            <div className="inline-flex items-center justify-center lg:justify-start gap-1.5 sm:gap-2 text-[11px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#B89A5A] font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-[#B89A5A]" />
-              <span>SHIVOHAM</span>
-            </div>
-
-            {/* Refined Serif Heading */}
-            <h1 className="font-serif text-2xl sm:text-4xl lg:text-6xl text-[#173D2B] font-normal tracking-tight leading-tight">
-              Elegance in Every Thread
-            </h1>
-
-            {/* Short Description */}
-            <p className="text-xs sm:text-base lg:text-lg text-[#242424]/80 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
-              Discover Timeless Indian Ethnic Wear. Thoughtfully handcrafted sarees, graceful kurtis, and royal suit sets for life&apos;s celebrated moments.
-            </p>
-
-            {/* Premium Call to Action Button */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
+    <section
+      aria-label="SHIVOHAM Hero Fashion Slider"
+      className="relative w-full bg-[#FAF7F0] border-b border-[#F3EBDD] overflow-hidden select-none"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Slider Viewport Container */}
+      {/* Responsive Height: 450px - 550px on Desktop, proportional on Tablet & Mobile */}
+      <div className="relative w-full h-[220px] xs:h-[260px] sm:h-[360px] md:h-[450px] lg:h-[500px] xl:h-[540px] overflow-hidden">
+        
+        {/* Slides Track with Smooth Hardware-Accelerated Sliding Animation */}
+        <div
+          className="flex h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+          style={{
+            transform: `translateX(-${currentIndex * 100}%)`,
+          }}
+        >
+          {BANNER_SLIDES.map((slide, index) => (
+            <div
+              key={slide.id}
+              className="relative w-full h-full shrink-0 min-w-full overflow-hidden bg-[#FAF7F0]"
+              aria-hidden={currentIndex !== index}
+            >
               <Link
-                href="/products"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 sm:px-10 py-3 sm:py-4 bg-[#173D2B] text-[#FAF7F0] hover:bg-[#123022] text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold transition-all duration-300 rounded-xs shadow-md hover:shadow-xl cursor-pointer group"
+                href={slide.link}
+                tabIndex={currentIndex === index ? 0 : -1}
+                className="relative block w-full h-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#173D2B]"
+                aria-label={slide.alt}
               >
-                <span>EXPLORE COLLECTION</span>
-                <ArrowRight className="w-4 h-4 text-[#B89A5A] group-hover:translate-x-1 transition-transform" />
+                <Image
+                  src={encodeURI(slide.image)}
+                  alt={slide.alt}
+                  fill
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  sizes="100vw"
+                  quality={90}
+                  className="w-full h-full object-cover sm:object-cover object-center transition-transform duration-1000 ease-out"
+                />
+
+                {/* Subtle Luxury Vignette Overlay for Depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none opacity-40 hover:opacity-20 transition-opacity" />
               </Link>
-
-              <Link
-                href="#categories"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3.5 text-xs sm:text-sm uppercase tracking-[0.18em] font-medium text-[#173D2B] hover:text-[#B89A5A] transition-colors border-b border-transparent hover:border-[#B89A5A]"
-              >
-                <span>View Categories</span>
-              </Link>
             </div>
-
-            {/* Subtle Brand Trust Note */}
-            <div className="pt-3 sm:pt-4 border-t border-[#F3EBDD]/80 flex items-center justify-center lg:justify-start gap-4 sm:gap-6 text-[11px] sm:text-xs text-[#242424]/70">
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#B89A5A]" />
-                <span>100% Pure Cotton Sarees</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#B89A5A]" />
-                <span>Artisanal Kurtis &amp; Suits</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Beautiful Indian Ethnic Fashion Model */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end items-center relative">
-            <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-md aspect-[3/4] rounded-xs overflow-hidden shadow-xl sm:shadow-2xl border-2 sm:border-4 border-[#FAF7F0] outline outline-1 outline-[#B89A5A]/40 bg-[#F3EBDD]">
-              <Image
-                src={encodeURI("/images/saree/saree 10.png")}
-                alt="SHIVOHAM Indian Ethnic Wear - Elegance in Every Thread"
-                fill
-                priority
-                sizes="(max-width: 640px) 280px, (max-width: 1024px) 380px, 40vw"
-                className="object-cover object-top hover:scale-103 transition-transform duration-700"
-              />
-
-              {/* Subtle Luxury Corner Stamp */}
-              <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 bg-[#173D2B]/90 backdrop-blur-xs px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xs border border-[#B89A5A]/50 text-right">
-                <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] font-semibold text-[#E5D2A5] block">
-                  ATELIER EDIT
-                </span>
-                <span className="text-[10px] sm:text-[11px] font-serif text-[#FAF7F0]">
-                  Handloom Heritage
-                </span>
-              </div>
-            </div>
-          </div>
-
+          ))}
         </div>
+
+        {/* Left Arrow Navigation Button */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            goToPrev();
+          }}
+          aria-label="Previous Slide"
+          className="absolute left-2.5 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#FAF7F0]/85 hover:bg-[#FAF7F0] text-[#173D2B] border border-[#B89A5A]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
+        >
+          <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-[#173D2B] group-hover:text-[#B89A5A] transition-colors -translate-x-0.5" />
+        </button>
+
+        {/* Right Arrow Navigation Button */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            goToNext();
+          }}
+          aria-label="Next Slide"
+          className="absolute right-2.5 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#FAF7F0]/85 hover:bg-[#FAF7F0] text-[#173D2B] border border-[#B89A5A]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
+        >
+          <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-[#173D2B] group-hover:text-[#B89A5A] transition-colors translate-x-0.5" />
+        </button>
+
+        {/* Small Indicator Dots at the bottom */}
+        <div
+          role="tablist"
+          aria-label="Banner slide indicators"
+          className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-black/25 backdrop-blur-xs border border-white/20"
+        >
+          {BANNER_SLIDES.map((slide, index) => {
+            const isActive = currentIndex === index;
+            return (
+              <button
+                key={slide.id}
+                role="tab"
+                aria-selected={isActive}
+                aria-label={`Go to slide ${index + 1}: ${slide.title}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setCurrentIndex(index);
+                }}
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                  isActive
+                    ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#B89A5A] shadow-xs"
+                    : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FAF7F0]/70 hover:bg-[#FAF7F0]"
+                }`}
+              />
+            );
+          })}
+        </div>
+
       </div>
     </section>
   );
