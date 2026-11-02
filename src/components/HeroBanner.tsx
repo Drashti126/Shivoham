@@ -106,18 +106,18 @@ export default function HeroBanner() {
   return (
     <section
       aria-label="SHIVOHAM Hero Fashion Slider"
-      className="relative w-full bg-[#FAF7F0] py-3 sm:py-5 lg:py-7 border-b border-[#F3EBDD] overflow-hidden select-none"
+      className="relative w-full bg-[#FAF7F0] py-2 sm:py-3 lg:py-4 border-b border-[#F3EBDD] overflow-hidden select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Symmetrical Container: Leaves balanced space on both sides */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      {/* Symmetrical Container: Subtle, sleek margins matching the header */}
+      <div className="w-full px-2.5 sm:px-5 md:px-8 lg:px-10">
         
         {/* Slider Viewport Container: Natural 2.35:1 aspect ratio ensures top is never cut */}
-        <div className="relative w-full aspect-[2/1] sm:aspect-[2.35/1] rounded-xs sm:rounded-sm overflow-hidden bg-[#FAF7F0] shadow-2xs hover:shadow-md transition-shadow border border-[#F3EBDD]">
+        <div className="relative w-full aspect-[2.1/1] sm:aspect-[2.35/1] rounded-xs sm:rounded-sm overflow-hidden bg-[#FAF7F0] shadow-2xs hover:shadow-md transition-shadow border border-[#F3EBDD]">
           
           {/* Slides Track with Smooth Hardware-Accelerated Sliding Animation */}
           <div
