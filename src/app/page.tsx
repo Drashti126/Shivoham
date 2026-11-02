@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import HeroBanner from "@/components/HeroBanner";
 import CategoryShowcase from "@/components/CategoryShowcase";
 import FreshArrivals from "@/components/FreshArrivals";
+import ShivohamEdit from "@/components/ShivohamEdit";
 import TrendingCollection from "@/components/TrendingCollection";
 import WhyChooseShivoham from "@/components/WhyChooseShivoham";
 import InstagramCollection from "@/components/InstagramCollection";
@@ -36,6 +37,9 @@ export default function HomePage() {
 
           {/* 4. New Arrivals: Maximum 4 Products */}
           <FreshArrivals />
+
+          {/* Luxury Fashion Magazine Editorial Section */}
+          <ShivohamEdit />
 
           {/* 5. Best Sellers: Maximum 4 Products */}
           <TrendingCollection />
