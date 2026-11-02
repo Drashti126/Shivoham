@@ -52,23 +52,23 @@ export default function LogoPlaceholder({
     <Link
       href="/"
       aria-label="SHIVOHAM Home"
-      className={`inline-flex items-center gap-2 sm:gap-3 group transition-opacity hover:opacity-95 ${className}`}
+      className={`inline-flex items-center gap-2 sm:gap-2.5 group transition-opacity hover:opacity-95 ${className}`}
     >
-      <div className="relative w-11 h-11 sm:w-14 sm:h-14 lg:w-[68px] lg:h-[68px] shrink-0 drop-shadow-xs">
+      <div className="relative w-9 h-9 sm:w-10 sm:h-10 lg:w-11 lg:h-11 shrink-0 drop-shadow-xs">
         <Image
           src={logoSrc}
           alt="SHIVOHAM Official Brand Logo"
-          width={68}
-          height={68}
+          width={44}
+          height={44}
           priority
           className="w-full h-full object-contain group-hover:scale-102 transition-transform duration-300"
         />
       </div>
       <div className="text-left">
-        <span className="font-serif text-base sm:text-xl lg:text-2xl tracking-[0.18em] sm:tracking-[0.22em] text-[#173F35] font-semibold uppercase block leading-tight">
+        <span className="font-serif text-sm sm:text-base lg:text-lg tracking-[0.18em] text-[#173F35] font-semibold uppercase block leading-tight">
           SHIVOHAM
         </span>
-        <span className="text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] text-[#B99A55] uppercase block font-sans font-medium mt-0.5">
+        <span className="text-[7px] sm:text-[8px] tracking-[0.22em] text-[#B99A55] uppercase block font-sans font-medium mt-0.5">
           Ethnic Wear
         </span>
       </div>

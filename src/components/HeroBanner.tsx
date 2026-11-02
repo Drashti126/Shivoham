@@ -106,7 +106,7 @@ export default function HeroBanner() {
   return (
     <section
       aria-label="SHIVOHAM Hero Fashion Slider"
-      className="relative w-full bg-[#F9F6EF] py-2.5 sm:py-3.5 lg:py-4.5 border-b border-[#DCC7A5]/35 overflow-hidden select-none"
+      className="relative w-full bg-[#F9F6EF] py-1.5 sm:py-2.5 border-b border-[#DCC7A5]/35 overflow-hidden select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}

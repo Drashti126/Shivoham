@@ -84,10 +84,10 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 w-full bg-[#F9F6EF]/95 backdrop-blur-md border-b border-[#DCC7A5]/35 transition-all">
       <div className="w-full px-3 sm:px-6 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-16 sm:h-20 lg:h-22">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           
           {/* Left: Mobile Hamburger & SHIVOHAM Logo */}
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-1 text-[#343434] hover:text-[#173F35] transition-colors lg:hidden cursor-pointer"
@@ -103,13 +103,13 @@ export default function Header() {
           {/* Center: Clean & Elegant Desktop Navigation Menu */}
           <nav
             aria-label="Main Navigation"
-            className="hidden lg:flex items-center justify-center flex-1 h-full gap-8 xl:gap-10 px-6"
+            className="hidden lg:flex items-center justify-center flex-1 h-full gap-7 xl:gap-9 px-4"
           >
             {navMenuItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="relative text-xs uppercase tracking-[0.2em] text-[#343434] hover:text-[#173F35] transition-colors font-medium py-3 group whitespace-nowrap"
+                className="relative text-[11px] uppercase tracking-[0.2em] text-[#343434] hover:text-[#173F35] transition-colors font-medium py-1.5 group whitespace-nowrap"
               >
                 <span>{item.label}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#173F35] transition-all duration-300 group-hover:w-full" />
@@ -118,7 +118,7 @@ export default function Header() {
           </nav>
 
           {/* Right: Search Icon, Wishlist Icon, Account Icon, Shopping Cart Icon */}
-          <div className="flex items-center shrink-0 gap-1.5 sm:gap-4 lg:gap-5">
+          <div className="flex items-center shrink-0 gap-1 sm:gap-2.5 lg:gap-3.5">
             {/* Desktop Search Bar (Expandable) */}
             <div ref={searchContainerRef} className="relative hidden sm:block">
               {isSearchOpen ? (
