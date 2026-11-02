@@ -106,109 +106,113 @@ export default function HeroBanner() {
   return (
     <section
       aria-label="SHIVOHAM Hero Fashion Slider"
-      className="relative w-full bg-[#FAF7F0] border-b border-[#F3EBDD] overflow-hidden select-none"
+      className="relative w-full bg-[#FAF7F0] py-3 sm:py-5 lg:py-7 border-b border-[#F3EBDD] overflow-hidden select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Slider Viewport Container */}
-      {/* Responsive Height: 450px - 550px on Desktop, proportional on Tablet & Mobile */}
-      <div className="relative w-full h-[220px] xs:h-[260px] sm:h-[360px] md:h-[450px] lg:h-[500px] xl:h-[540px] overflow-hidden">
+      {/* Symmetrical Container: Leaves balanced space on both sides */}
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         
-        {/* Slides Track with Smooth Hardware-Accelerated Sliding Animation */}
-        <div
-          className="flex h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
-          style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
-          }}
-        >
-          {BANNER_SLIDES.map((slide, index) => (
-            <div
-              key={slide.id}
-              className="relative w-full h-full shrink-0 min-w-full overflow-hidden bg-[#FAF7F0]"
-              aria-hidden={currentIndex !== index}
-            >
-              <Link
-                href={slide.link}
-                tabIndex={currentIndex === index ? 0 : -1}
-                className="relative block w-full h-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#173D2B]"
-                aria-label={slide.alt}
-              >
-                <Image
-                  src={encodeURI(slide.image)}
-                  alt={slide.alt}
-                  fill
-                  priority={index === 0}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  sizes="100vw"
-                  quality={90}
-                  className="w-full h-full object-cover sm:object-cover object-center transition-transform duration-1000 ease-out"
-                />
-
-                {/* Subtle Luxury Vignette Overlay for Depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none opacity-40 hover:opacity-20 transition-opacity" />
-              </Link>
-            </div>
-          ))}
-        </div>
-
-        {/* Left Arrow Navigation Button */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            goToPrev();
-          }}
-          aria-label="Previous Slide"
-          className="absolute left-2.5 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#FAF7F0]/85 hover:bg-[#FAF7F0] text-[#173D2B] border border-[#B89A5A]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
-        >
-          <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-[#173D2B] group-hover:text-[#B89A5A] transition-colors -translate-x-0.5" />
-        </button>
-
-        {/* Right Arrow Navigation Button */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            goToNext();
-          }}
-          aria-label="Next Slide"
-          className="absolute right-2.5 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#FAF7F0]/85 hover:bg-[#FAF7F0] text-[#173D2B] border border-[#B89A5A]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
-        >
-          <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-[#173D2B] group-hover:text-[#B89A5A] transition-colors translate-x-0.5" />
-        </button>
-
-        {/* Small Indicator Dots at the bottom */}
-        <div
-          role="tablist"
-          aria-label="Banner slide indicators"
-          className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-black/25 backdrop-blur-xs border border-white/20"
-        >
-          {BANNER_SLIDES.map((slide, index) => {
-            const isActive = currentIndex === index;
-            return (
-              <button
+        {/* Slider Viewport Container: Natural 2.35:1 aspect ratio ensures top is never cut */}
+        <div className="relative w-full aspect-[2/1] sm:aspect-[2.35/1] rounded-xs sm:rounded-sm overflow-hidden bg-[#FAF7F0] shadow-2xs hover:shadow-md transition-shadow border border-[#F3EBDD]">
+          
+          {/* Slides Track with Smooth Hardware-Accelerated Sliding Animation */}
+          <div
+            className="flex h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+            style={{
+              transform: `translateX(-${currentIndex * 100}%)`,
+            }}
+          >
+            {BANNER_SLIDES.map((slide, index) => (
+              <div
                 key={slide.id}
-                role="tab"
-                aria-selected={isActive}
-                aria-label={`Go to slide ${index + 1}: ${slide.title}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setCurrentIndex(index);
-                }}
-                className={`transition-all duration-300 rounded-full cursor-pointer ${
-                  isActive
-                    ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#B89A5A] shadow-xs"
-                    : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FAF7F0]/70 hover:bg-[#FAF7F0]"
-                }`}
-              />
-            );
-          })}
+                className="relative w-full h-full shrink-0 min-w-full overflow-hidden bg-[#FAF7F0]"
+                aria-hidden={currentIndex !== index}
+              >
+                <Link
+                  href={slide.link}
+                  tabIndex={currentIndex === index ? 0 : -1}
+                  className="relative block w-full h-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#173D2B]"
+                  aria-label={slide.alt}
+                >
+                  <Image
+                    src={encodeURI(slide.image)}
+                    alt={slide.alt}
+                    fill
+                    priority={index === 0}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    sizes="(max-width: 1280px) 100vw, 1280px"
+                    quality={95}
+                    className="w-full h-full object-cover object-top transition-transform duration-1000 ease-out"
+                  />
+
+                  {/* Subtle Luxury Vignette for Depth */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent pointer-events-none opacity-40 hover:opacity-10 transition-opacity" />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Left Arrow Navigation Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              goToPrev();
+            }}
+            aria-label="Previous Slide"
+            className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FAF7F0]/90 hover:bg-[#FAF7F0] text-[#173D2B] border border-[#B89A5A]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
+          >
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-[#173D2B] group-hover:text-[#B89A5A] transition-colors -translate-x-0.5" />
+          </button>
+
+          {/* Right Arrow Navigation Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              goToNext();
+            }}
+            aria-label="Next Slide"
+            className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FAF7F0]/90 hover:bg-[#FAF7F0] text-[#173D2B] border border-[#B89A5A]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
+          >
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#173D2B] group-hover:text-[#B89A5A] transition-colors translate-x-0.5" />
+          </button>
+
+          {/* Small Indicator Dots at the bottom */}
+          <div
+            role="tablist"
+            aria-label="Banner slide indicators"
+            className="absolute bottom-2.5 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 rounded-full bg-black/30 backdrop-blur-xs border border-white/20"
+          >
+            {BANNER_SLIDES.map((slide, index) => {
+              const isActive = currentIndex === index;
+              return (
+                <button
+                  key={slide.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-label={`Go to slide ${index + 1}: ${slide.title}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setCurrentIndex(index);
+                  }}
+                  className={`transition-all duration-300 rounded-full cursor-pointer ${
+                    isActive
+                      ? "w-5 sm:w-7 h-1.5 bg-[#B89A5A] shadow-xs"
+                      : "w-1.5 h-1.5 bg-[#FAF7F0]/70 hover:bg-[#FAF7F0]"
+                  }`}
+                />
+              );
+            })}
+          </div>
+
         </div>
 
       </div>
