@@ -82,7 +82,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#FAF7F0]/95 backdrop-blur-md border-b border-[#F3EBDD] transition-all">
+    <header className="sticky top-0 z-40 w-full bg-[#F9F6EF]/95 backdrop-blur-md border-b border-[#DCC7A5]/35 transition-all">
       <div className="w-full px-3 sm:px-6 md:px-8 lg:px-12">
         <div className="flex items-center justify-between h-16 sm:h-20 lg:h-22">
           
@@ -90,7 +90,7 @@ export default function Header() {
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-1 text-[#242424] hover:text-[#173D2B] transition-colors lg:hidden cursor-pointer"
+              className="p-1 text-[#343434] hover:text-[#173F35] transition-colors lg:hidden cursor-pointer"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open navigation menu"}
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -109,35 +109,35 @@ export default function Header() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="relative text-xs uppercase tracking-[0.2em] text-[#242424] hover:text-[#173D2B] transition-colors font-medium py-3 group whitespace-nowrap"
+                className="relative text-xs uppercase tracking-[0.2em] text-[#343434] hover:text-[#173F35] transition-colors font-medium py-3 group whitespace-nowrap"
               >
                 <span>{item.label}</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#173D2B] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#173F35] transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
           </nav>
 
-          {/* Right: Search Icon, Account Icon, Shopping Cart Icon */}
+          {/* Right: Search Icon, Wishlist Icon, Account Icon, Shopping Cart Icon */}
           <div className="flex items-center shrink-0 gap-1.5 sm:gap-4 lg:gap-5">
             {/* Desktop Search Bar (Expandable) */}
             <div ref={searchContainerRef} className="relative hidden sm:block">
               {isSearchOpen ? (
-                <div className="flex items-center bg-[#FFFFFF] border border-[#B89A5A] rounded-full px-3 py-1 shadow-sm transition-all w-52 sm:w-64">
-                  <Search className="w-4 h-4 text-[#B89A5A] shrink-0" />
+                <div className="flex items-center bg-[#FFFFFF] border border-[#B99A55] rounded-full px-3 py-1 shadow-sm transition-all w-52 sm:w-64">
+                  <Search className="w-4 h-4 text-[#B99A55] shrink-0" />
                   <input
                     ref={searchInputRef}
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search sarees, kurtis, suits..."
-                    className="w-full text-xs pl-2 pr-1 py-1 bg-transparent text-[#242424] focus:outline-none placeholder:text-[#242424]/40"
+                    className="w-full text-xs pl-2 pr-1 py-1 bg-transparent text-[#343434] focus:outline-none placeholder:text-[#343434]/40"
                   />
                   <button
                     onClick={() => {
                       setSearchQuery("");
                       setIsSearchOpen(false);
                     }}
-                    className="p-0.5 text-[#242424]/50 hover:text-[#173D2B] cursor-pointer"
+                    className="p-0.5 text-[#343434]/50 hover:text-[#173F35] cursor-pointer"
                     aria-label="Close search"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -146,11 +146,11 @@ export default function Header() {
               ) : (
                 <button
                   onClick={() => setIsSearchOpen(true)}
-                  className="p-2 text-[#242424] hover:text-[#173D2B] transition-colors rounded-full hover:bg-[#FAF7F0] cursor-pointer"
+                  className="p-2 text-[#343434] hover:text-[#173F35] transition-colors rounded-full hover:bg-[#F4EFE5] cursor-pointer"
                   aria-label="Search"
                   title="Search collections"
                 >
-                  <Search className="w-5 h-5 text-[#173D2B]" />
+                  <Search className="w-5 h-5 text-[#173F35]" />
                 </button>
               )}
 
@@ -227,22 +227,22 @@ export default function Header() {
             {/* Mobile Search Toggle Icon */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="sm:hidden p-2 text-[#242424] hover:text-[#173D2B] transition-colors rounded-full cursor-pointer"
+              className="sm:hidden p-2 text-[#343434] hover:text-[#173F35] transition-colors rounded-full cursor-pointer"
               aria-label="Toggle mobile search"
             >
-              <Search className="w-5 h-5 text-[#173D2B]" />
+              <Search className="w-5 h-5 text-[#173F35]" />
             </button>
 
             {/* Wishlist Icon */}
             <button
               onClick={openWishlist}
-              className="relative p-2 text-[#242424] hover:text-[#173D2B] transition-colors rounded-full hover:bg-[#FAF7F0] cursor-pointer"
+              className="relative p-2 text-[#343434] hover:text-[#173F35] transition-colors rounded-full hover:bg-[#F4EFE5] cursor-pointer"
               aria-label={`Wishlist containing ${wishlist.length} saved items`}
               title="Saved Wishlist"
             >
-              <Heart className="w-5 h-5 text-[#173D2B]" />
+              <Heart className="w-5 h-5 text-[#173F35]" />
               {wishlist.length > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#801426] text-[#FAF7F0] text-[10px] font-bold flex items-center justify-center shadow-xs border border-[#FAF7F0]">
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#801426] text-[#F9F6EF] text-[10px] font-bold flex items-center justify-center shadow-xs border border-[#F9F6EF]">
                   {wishlist.length}
                 </span>
               )}
@@ -251,23 +251,23 @@ export default function Header() {
             {/* Account Icon */}
             <Link
               href="/account"
-              className="p-2 text-[#242424] hover:text-[#173D2B] transition-colors rounded-full hover:bg-[#FAF7F0] cursor-pointer"
+              className="p-2 text-[#343434] hover:text-[#173F35] transition-colors rounded-full hover:bg-[#F4EFE5] cursor-pointer"
               aria-label="Customer Account"
               title={customer ? `Signed in as ${customer.name}` : "Account Login / Profile"}
             >
-              <User className="w-5 h-5 text-[#173D2B]" />
+              <User className="w-5 h-5 text-[#173F35]" />
             </Link>
 
             {/* Shopping Cart Icon */}
             <button
               onClick={openCart}
-              className="relative p-2 text-[#242424] hover:text-[#173D2B] transition-colors rounded-full hover:bg-[#FAF7F0] cursor-pointer"
+              className="relative p-2 text-[#343434] hover:text-[#173F35] transition-colors rounded-full hover:bg-[#F4EFE5] cursor-pointer"
               aria-label={`Shopping bag containing ${cartCount} items`}
               title="Shopping Bag"
             >
-              <ShoppingBag className="w-5 h-5 text-[#173D2B]" />
+              <ShoppingBag className="w-5 h-5 text-[#173F35]" />
               {cartCount > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#173D2B] text-[#FAF7F0] text-[10px] font-bold flex items-center justify-center shadow-xs border border-[#FAF7F0]">
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#173F35] text-[#F9F6EF] text-[10px] font-bold flex items-center justify-center shadow-xs border border-[#F9F6EF]">
                   {cartCount}
                 </span>
               )}

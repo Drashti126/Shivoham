@@ -106,18 +106,18 @@ export default function HeroBanner() {
   return (
     <section
       aria-label="SHIVOHAM Hero Fashion Slider"
-      className="relative w-full bg-[#FAF7F0] py-2 sm:py-3 lg:py-4 border-b border-[#F3EBDD] overflow-hidden select-none"
+      className="relative w-full bg-[#F9F6EF] py-2.5 sm:py-3.5 lg:py-4.5 border-b border-[#DCC7A5]/35 overflow-hidden select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Symmetrical Container: Subtle, sleek margins matching the header */}
-      <div className="w-full px-2.5 sm:px-5 md:px-8 lg:px-10">
+      {/* Symmetrical Container: Balanced, sleek margins - not edge-to-edge and not overly boxed */}
+      <div className="w-full max-w-[1680px] mx-auto px-2.5 sm:px-4 md:px-6 lg:px-8">
         
-        {/* Slider Viewport Container: Natural 2.35:1 aspect ratio ensures top is never cut */}
-        <div className="relative w-full aspect-[2.1/1] sm:aspect-[2.35/1] rounded-xs sm:rounded-sm overflow-hidden bg-[#FAF7F0] shadow-2xs hover:shadow-md transition-shadow border border-[#F3EBDD]">
+        {/* Slider Viewport Container: Natural 2.36:1 aspect ratio ensures top is never cut */}
+        <div className="relative w-full aspect-[2.1/1] sm:aspect-[2.36/1] rounded-xs sm:rounded-sm overflow-hidden bg-[#F4EFE5] shadow-xs hover:shadow-md transition-shadow border border-[#DCC7A5]/40">
           
           {/* Slides Track with Smooth Hardware-Accelerated Sliding Animation */}
           <div
@@ -129,13 +129,13 @@ export default function HeroBanner() {
             {BANNER_SLIDES.map((slide, index) => (
               <div
                 key={slide.id}
-                className="relative w-full h-full shrink-0 min-w-full overflow-hidden bg-[#FAF7F0]"
+                className="relative w-full h-full shrink-0 min-w-full overflow-hidden bg-[#F4EFE5]"
                 aria-hidden={currentIndex !== index}
               >
                 <Link
                   href={slide.link}
                   tabIndex={currentIndex === index ? 0 : -1}
-                  className="relative block w-full h-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#173D2B]"
+                  className="relative block w-full h-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#173F35]"
                   aria-label={slide.alt}
                 >
                   <Image
@@ -165,9 +165,9 @@ export default function HeroBanner() {
               goToPrev();
             }}
             aria-label="Previous Slide"
-            className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FAF7F0]/90 hover:bg-[#FAF7F0] text-[#173D2B] border border-[#B89A5A]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
+            className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#F9F6EF]/90 hover:bg-[#F9F6EF] text-[#173F35] border border-[#B99A55]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
           >
-            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-[#173D2B] group-hover:text-[#B89A5A] transition-colors -translate-x-0.5" />
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-[#173F35] group-hover:text-[#B99A55] transition-colors -translate-x-0.5" />
           </button>
 
           {/* Right Arrow Navigation Button */}
@@ -179,9 +179,9 @@ export default function HeroBanner() {
               goToNext();
             }}
             aria-label="Next Slide"
-            className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FAF7F0]/90 hover:bg-[#FAF7F0] text-[#173D2B] border border-[#B89A5A]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
+            className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#F9F6EF]/90 hover:bg-[#F9F6EF] text-[#173F35] border border-[#B99A55]/50 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs group"
           >
-            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#173D2B] group-hover:text-[#B89A5A] transition-colors translate-x-0.5" />
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#173F35] group-hover:text-[#B99A55] transition-colors translate-x-0.5" />
           </button>
 
           {/* Small Indicator Dots at the bottom */}
@@ -205,8 +205,8 @@ export default function HeroBanner() {
                   }}
                   className={`transition-all duration-300 rounded-full cursor-pointer ${
                     isActive
-                      ? "w-5 sm:w-7 h-1.5 bg-[#B89A5A] shadow-xs"
-                      : "w-1.5 h-1.5 bg-[#FAF7F0]/70 hover:bg-[#FAF7F0]"
+                      ? "w-5 sm:w-7 h-1.5 bg-[#B99A55] shadow-xs"
+                      : "w-1.5 h-1.5 bg-[#F9F6EF]/70 hover:bg-[#F9F6EF]"
                   }`}
                 />
               );

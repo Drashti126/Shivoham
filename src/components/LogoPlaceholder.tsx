@@ -37,10 +37,10 @@ export default function LogoPlaceholder({
           />
         </div>
         <div>
-          <span className="font-serif text-xl sm:text-2xl tracking-[0.22em] text-[#173D2B] font-semibold uppercase block leading-none">
+          <span className="font-serif text-xl sm:text-2xl tracking-[0.22em] text-[#173F35] font-semibold uppercase block leading-none">
             SHIVOHAM
           </span>
-          <span className="text-[10px] sm:text-[11px] tracking-widest text-[#B89A5A] uppercase block mt-1.5 font-sans">
+          <span className="text-[10px] sm:text-[11px] tracking-widest text-[#B99A55] uppercase block mt-1.5 font-sans">
             Sarees • Suits • Ethnic Wear
           </span>
         </div>
@@ -65,10 +65,10 @@ export default function LogoPlaceholder({
         />
       </div>
       <div className="text-left">
-        <span className="font-serif text-base sm:text-xl lg:text-2xl tracking-[0.18em] sm:tracking-[0.22em] text-[#173D2B] font-semibold uppercase block leading-tight">
+        <span className="font-serif text-base sm:text-xl lg:text-2xl tracking-[0.18em] sm:tracking-[0.22em] text-[#173F35] font-semibold uppercase block leading-tight">
           SHIVOHAM
         </span>
-        <span className="text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] text-[#B89A5A] uppercase block font-sans font-medium mt-0.5">
+        <span className="text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] text-[#B99A55] uppercase block font-sans font-medium mt-0.5">
           Ethnic Wear
         </span>
       </div>

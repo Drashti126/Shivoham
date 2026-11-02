@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import { Sparkles } from "lucide-react";
 import { BUSINESS_CONTACT } from "@/data/sampleProducts";
 
 function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
@@ -52,95 +51,87 @@ export default function InstagramCollection() {
   ];
 
   return (
-    <section id="instagram-collection" className="py-10 sm:py-16 lg:py-20 bg-[#FAF7F0] border-b border-[#F3EBDD]">
+    <section
+      id="instagram-collection"
+      aria-label="Instagram Collection Gallery"
+      className="py-14 sm:py-20 lg:py-24 bg-[#F4EFE5] border-b border-[#DCC7A5]/35 transition-colors"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-2">
+        
+        {/* Section Header: Minimal & Sophisticated */}
+        <div className="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-2.5">
           <a
             href={BUSINESS_CONTACT.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#B89A5A] hover:text-[#173D2B] font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#B99A55] hover:text-[#173F35] font-semibold transition-colors"
           >
-            <InstagramIcon className="w-3.5 h-3.5 text-[#B89A5A]" />
+            <InstagramIcon className="w-3.5 h-3.5 text-[#B99A55]" />
             <span>{BUSINESS_CONTACT.instagramHandle.toUpperCase()}</span>
           </a>
-          <h2 className="font-serif text-2xl sm:text-4xl text-[#173D2B] font-normal tracking-tight">
+
+          <h2 className="font-serif text-2xl sm:text-4xl lg:text-5xl text-[#173F35] font-normal tracking-tight">
             Instagram Collection
           </h2>
-          <div className="w-14 h-0.5 bg-[#B89A5A] mx-auto" />
-          <p className="text-xs sm:text-sm text-[#242424]/75">
+
+          <div className="flex items-center justify-center gap-2 pt-1">
+            <span className="w-8 h-[1px] bg-[#B99A55]/40" />
+            <span className="text-[#B99A55] text-xs">◆</span>
+            <span className="w-8 h-[1px] bg-[#B99A55]/40" />
+          </div>
+
+          <p className="text-xs sm:text-sm text-[#343434]/75 font-normal leading-relaxed pt-1">
             Follow our styling journeys, real client celebrations, and artisanal unveilings.
           </p>
         </div>
 
-        {/* 4 Selected Boutique Images in 1 Row (2-col on mobile, 4-col on desktop) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
+        {/* Four Elegant Square Photographs with Consistent Spacing */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {instagramPosts.map((post) => (
             <a
               key={post.id}
               href={BUSINESS_CONTACT.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative aspect-[3/4] bg-[#F3EBDD] border border-[#F3EBDD] overflow-hidden rounded-xs shadow-2xs hover:shadow-xl transition-all duration-300 block cursor-pointer"
+              className="group relative aspect-square bg-[#F9F6EF] border border-[#DCC7A5]/45 overflow-hidden rounded-xs shadow-2xs hover:shadow-xl transition-all duration-300 block cursor-pointer"
             >
               <Image
                 src={encodeURI(post.image)}
                 alt={post.caption}
                 fill
                 sizes="(max-width: 640px) 50vw, 25vw"
-                className="object-cover object-top transition-transform duration-700 group-hover:scale-108"
+                className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-106"
               />
 
-              {/* Mobile Subtle Bottom Stamp (for touch screens without hover) */}
-              <div className="sm:hidden absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2 flex items-center justify-between text-[#FAF7F0]">
-                <span className="text-[9px] font-sans font-medium">
-                  {post.category}
-                </span>
-                <InstagramIcon className="w-3 h-3 text-[#B89A5A]" />
-              </div>
-
-              {/* Desktop Instagram Hover Overlay */}
-              <div className="hidden sm:flex absolute inset-0 bg-[#173D2B]/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-col items-center justify-center p-4 text-center text-[#FAF7F0]">
-                <div className="w-10 h-10 rounded-full bg-[#FAF7F0]/20 flex items-center justify-center mb-2.5 border border-[#B89A5A]/50">
-                  <InstagramIcon className="w-5 h-5 text-[#FAF7F0]" />
+              {/* Minimal Hover Overlay */}
+              <div className="absolute inset-0 bg-[#173F35]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center text-[#F9F6EF]">
+                <div className="w-9 h-9 rounded-full bg-[#F9F6EF]/15 flex items-center justify-center mb-2 border border-[#B99A55]/50">
+                  <InstagramIcon className="w-4 h-4 text-[#F9F6EF]" />
                 </div>
-                <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold block mb-1">
+                <span className="text-[9px] uppercase tracking-wider text-[#DCC7A5] font-semibold block mb-1">
                   {post.category}
                 </span>
-                <p className="text-xs text-[#FAF7F0]/90 font-serif line-clamp-2">
+                <p className="text-[11px] text-[#F9F6EF]/90 font-serif line-clamp-2">
                   {post.caption}
                 </p>
-                <span className="mt-2 text-[10px] uppercase tracking-wider text-[#E5D2A5] font-semibold underline">
-                  View on Instagram
-                </span>
               </div>
             </a>
           ))}
         </div>
 
-        {/* Follow CTA */}
-        <div className="text-center mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
+        {/* Minimal Follow Us Button */}
+        <div className="text-center mt-8 sm:mt-12">
           <a
             href={BUSINESS_CONTACT.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#FFFFFF] hover:bg-[#FAF7F0] border border-[#B89A5A]/60 text-[#173D2B] hover:text-[#B89A5A] text-xs uppercase tracking-[0.18em] font-semibold rounded-xs transition-colors shadow-2xs"
+            className="inline-flex items-center gap-2 px-7 py-3 bg-[#173F35] hover:bg-[#112d26] text-[#F9F6EF] text-xs uppercase tracking-[0.2em] font-semibold rounded-xs transition-all shadow-2xs hover:shadow-md cursor-pointer border border-[#B99A55]/40"
           >
-            <InstagramIcon className="w-4 h-4 text-[#B89A5A]" />
-            <span>Follow @shivoham.attire</span>
-          </a>
-
-          <a
-            href={BUSINESS_CONTACT.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-semibold text-[#173D2B] hover:text-[#B89A5A] transition-colors border-b border-[#173D2B]/40 hover:border-[#B89A5A] pb-0.5"
-          >
-            <span>Connect on WhatsApp</span>
-            <Sparkles className="w-3.5 h-3.5 text-[#B89A5A]" />
+            <InstagramIcon className="w-4 h-4 text-[#B99A55]" />
+            <span>Follow Us</span>
           </a>
         </div>
+
       </div>
     </section>
   );

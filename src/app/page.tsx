@@ -21,7 +21,7 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 export default function HomePage() {
   return (
     <ShopProvider>
-      <div className="min-h-screen flex flex-col bg-[#FAF7F0] text-[#242424]">
+      <div className="min-h-screen flex flex-col bg-[#F9F6EF] text-[#343434]">
         {/* Top Announcement Bar */}
         <AnnouncementBar />
 
@@ -29,29 +29,29 @@ export default function HomePage() {
         <Header />
 
         <main className="flex-1">
-          {/* 2. One Large Hero Banner */}
+          {/* Section 1: Hero Banner (5-image horizontal slider) */}
           <HeroBanner />
 
-          {/* 3. Three Category Cards: Sarees, Kurtis, Suits */}
+          {/* Section 2: Curated Collections (3 category cards) */}
           <CategoryShowcase />
 
-          {/* 4. New Arrivals: Maximum 4 Products */}
+          {/* Section 3: New Arrivals (Editorial horizontal scrolling layout) */}
           <FreshArrivals />
 
-          {/* Luxury Fashion Magazine Editorial Section */}
+          {/* Section 4: The Shivoham Edit (Luxury fashion magazine editorial) */}
           <ShivohamEdit />
 
-          {/* 5. Best Sellers: Maximum 4 Products */}
+          {/* Section 5: Best Sellers (With category filter tabs: All | Sarees | Kurtis | Suits) */}
           <TrendingCollection />
 
-          {/* 6. Why Choose SHIVOHAM */}
+          {/* Brand Pillars: Why Choose SHIVOHAM */}
           <WhyChooseShivoham />
 
-          {/* 7. Instagram Collection: Display only 4 selected images */}
+          {/* Section 6: Instagram Collection (4 square gallery layout) */}
           <InstagramCollection />
         </main>
 
-        {/* 8. Elegant Footer */}
+        {/* Footer */}
         <Footer />
 
         {/* Floating WhatsApp Contact Button */}

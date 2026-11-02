@@ -3,27 +3,26 @@
 :root {
   --font-playfair: "Playfair Display", Georgia, "Times New Roman", serif;
   --font-inter: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --ivory: #FAF7F0;
-  --cream: #F3EBDD;
-  --forest: #173D2B;
-  --forest-dark: #0f291d;
-  --gold: #B89A5A;
-  --gold-light: #E5D2A5;
+  --ivory: #F9F6EF;
+  --cream: #F4EFE5;
+  --champagne: #DCC7A5;
+  --gold: #B99A55;
+  --forest: #173F35;
+  --charcoal: #343434;
   --wine: #801426;
   --white: #FFFFFF;
-  --charcoal: #242424;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: #FAF7F0;
-  color: #242424;
+  background-color: #F9F6EF;
+  color: #343434;
 }
 
 body {
   font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: #FAF7F0;
-  color: #242424;
+  background-color: #F9F6EF;
+  color: #343434;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
