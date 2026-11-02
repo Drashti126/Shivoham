@@ -322,12 +322,14 @@ function ProductDetailContent() {
           </div>
 
           {/* Primary Action Buttons */}
-          <div className="space-y-3 pt-4 border-t border-[#F3EBDD]">
+          {/* Order Actions */}
+          <div className="flex flex-col gap-3 pt-4 border-t border-[#DCC7A5]/35">
             {/* Row 1: Add to Bag + Wishlist */}
             <div className="flex items-center gap-3">
               <button
+                type="button"
                 onClick={handleAddToCart}
-                className="flex-1 py-4 px-6 bg-[#173D2B] hover:bg-[#0f291d] text-[#FAF7F0] text-xs uppercase tracking-[0.2em] font-semibold flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+                className="flex-1 py-4 px-6 bg-[#173F35] hover:bg-[#0f291d] text-[#F9F6EF] text-xs uppercase tracking-[0.2em] font-semibold flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer rounded-xs"
               >
                 {addedNotice ? (
                   <>
@@ -336,18 +338,19 @@ function ProductDetailContent() {
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="w-4 h-4 text-[#B89A5A]" />
+                    <ShoppingBag className="w-4 h-4 text-[#B99A55]" />
                     <span>Add to Shopping Bag</span>
                   </>
                 )}
               </button>
 
               <button
+                type="button"
                 onClick={() => toggleWishlist(product.id)}
                 className={`p-4 border rounded-xs transition-colors cursor-pointer ${
                   inWishlist
                     ? "border-[#801426] bg-[#801426]/10 text-[#801426]"
-                    : "border-[#F3EBDD] bg-[#FFFFFF] text-[#242424]/70 hover:border-[#173D2B]"
+                    : "border-[#DCC7A5]/40 bg-[#FFFFFF] text-[#343434]/70 hover:border-[#173F35]"
                 }`}
                 aria-label={inWishlist ? "In Wishlist" : "Add to Wishlist"}
               >
@@ -357,10 +360,11 @@ function ProductDetailContent() {
 
             {/* Row 2: Buy Now Instant Checkout */}
             <button
+              type="button"
               onClick={handleBuyNow}
-              className="w-full py-3.5 px-6 bg-[#B89A5A] hover:bg-[#a6894c] text-[#FAF7F0] text-xs uppercase tracking-[0.2em] font-semibold flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer"
+              className="w-full py-3.5 px-6 bg-[#B99A55] hover:bg-[#a6894c] text-[#F9F6EF] text-xs uppercase tracking-[0.2em] font-semibold flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer rounded-xs"
             >
-              <Zap className="w-4 h-4 fill-[#FAF7F0]" />
+              <Zap className="w-4 h-4 fill-[#F9F6EF]" />
               <span>Buy Now (Express Checkout)</span>
             </button>
 
@@ -369,7 +373,7 @@ function ProductDetailContent() {
               href={generateProductWhatsAppLink(product, quantity, selectedSize)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3.5 px-6 border border-[#25D366] bg-[#FFFFFF] hover:bg-[#25D366]/5 text-[#173D2B] text-xs uppercase tracking-[0.18em] font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-2xs"
+              className="w-full py-3.5 px-6 border border-[#25D366] bg-[#FFFFFF] hover:bg-emerald-50/50 text-[#173F35] text-xs uppercase tracking-[0.18em] font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-2xs rounded-xs"
             >
               <MessageCircle className="w-4 h-4 text-[#25D366]" />
               <span>Order on WhatsApp (Prefilled Inquiry)</span>

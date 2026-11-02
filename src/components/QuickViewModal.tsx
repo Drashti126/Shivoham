@@ -197,11 +197,12 @@ export default function QuickViewModal() {
           </div>
 
           {/* Action CTAs */}
-          <div className="space-y-3 pt-4 border-t border-[#F3EBDD]">
+          <div className="flex flex-col gap-3 pt-4 border-t border-[#DCC7A5]/35">
             <div className="flex items-center gap-2">
               <button
+                type="button"
                 onClick={handleAdd}
-                className="flex-1 py-3.5 px-4 bg-[#173D2B] hover:bg-[#0f291d] text-[#FAF7F0] text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md"
+                className="flex-1 py-3.5 px-4 bg-[#173F35] hover:bg-[#0f291d] text-[#F9F6EF] text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md rounded-xs"
               >
                 {addedNotice ? (
                   <>
@@ -210,18 +211,19 @@ export default function QuickViewModal() {
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="w-4 h-4 text-[#B89A5A]" />
+                    <ShoppingBag className="w-4 h-4 text-[#B99A55]" />
                     <span>Add to Bag</span>
                   </>
                 )}
               </button>
 
               <button
+                type="button"
                 onClick={() => toggleWishlist(quickViewProduct.id)}
                 className={`p-3.5 border transition-all rounded-xs cursor-pointer ${
                   inWishlist
                     ? "border-[#801426] bg-[#801426]/10 text-[#801426]"
-                    : "border-[#F3EBDD] text-[#242424]/70 hover:border-[#173D2B]"
+                    : "border-[#DCC7A5]/50 text-[#343434]/70 hover:border-[#173F35]"
                 }`}
                 aria-label={inWishlist ? "In Wishlist" : "Add to Wishlist"}
               >
@@ -235,9 +237,9 @@ export default function QuickViewModal() {
               href={generateProductWhatsAppLink(quickViewProduct)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-2.5 px-4 border border-[#F3EBDD] hover:border-[#173D2B] hover:bg-[#FAF7F0] text-[#173D2B] text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="w-full py-2.5 px-4 border border-[#25D366] bg-[#FFFFFF] hover:bg-emerald-50/50 text-[#173F35] text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer rounded-xs"
             >
-              <MessageCircle className="w-3.5 h-3.5" />
+              <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
               <span>Inquire &amp; Order via WhatsApp</span>
             </a>
           </div>
