@@ -10,12 +10,8 @@ import {
   Minus,
   Trash2,
   MessageCircle,
-  Tag,
   Truck,
-  Check,
   Sparkles,
-  User,
-  Phone,
   ArrowRight,
   ShieldCheck,
 } from "lucide-react";
@@ -34,17 +30,9 @@ export default function CartDrawer() {
     cartCount,
     currency,
     formatPrice,
-    appliedCoupon,
-    applyCoupon,
-    removeCoupon,
-    discountAmount,
-    finalTotal,
     freeShippingThreshold,
     generateWhatsAppCartLink,
   } = useShop();
-
-  const [couponInput, setCouponInput] = useState("");
-  const [couponMessage, setCouponMessage] = useState<{ text: string; isError: boolean } | null>(null);
 
   useEffect(() => {
     if (isCartOpen) {
@@ -58,16 +46,6 @@ export default function CartDrawer() {
 
   const freeShippingProgress = Math.min(100, Math.round((cartTotal / freeShippingThreshold) * 100));
   const amountNeededForFreeShipping = Math.max(0, freeShippingThreshold - cartTotal);
-
-  const handleApplyCoupon = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!couponInput.trim()) return;
-    const res = applyCoupon(couponInput);
-    setCouponMessage({ text: res.message, isError: !res.success });
-    if (res.success) {
-      setCouponInput("");
-    }
-  };
 
   const handleProceedToCheckout = () => {
     closeCart();
@@ -244,70 +222,15 @@ export default function CartDrawer() {
             )}
           </div>
 
-          {/* Footer Checkout & Coupon Section */}
+          {/* Footer Checkout Section */}
           {cart.length > 0 && (
-            <div className="p-5 border-t border-[#DCC7A5]/40 space-y-4 bg-[#FFFFFF] max-h-[55vh] overflow-y-auto">
-              {/* Coupon Applicator */}
-              <div className="space-y-1.5">
-                <form onSubmit={handleApplyCoupon} className="flex gap-2">
-                  <div className="relative flex-1">
-                    <Tag className="w-3.5 h-3.5 text-[#B99A55] absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      placeholder="Coupon Code (e.g. SHIVOHAM15)"
-                      value={couponInput}
-                      onChange={(e) => setCouponInput(e.target.value)}
-                      className="w-full pl-8 pr-3 py-2 text-xs uppercase bg-[#F9F6EF] border border-[#DCC7A5]/50 rounded-xs focus:outline-none focus:border-[#173F35] text-[#343434]"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-[#173F35] hover:bg-[#0f291d] text-[#F9F6EF] text-xs font-semibold uppercase tracking-wider rounded-xs cursor-pointer shadow-xs"
-                  >
-                    Apply
-                  </button>
-                </form>
-
-                {couponMessage && (
-                  <p
-                    className={`text-[10px] ${
-                      couponMessage.isError ? "text-[#801426]" : "text-emerald-700 font-semibold"
-                    }`}
-                  >
-                    {couponMessage.text}
-                  </p>
-                )}
-
-                {appliedCoupon && (
-                  <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xs text-[11px] text-emerald-800">
-                    <span className="flex items-center gap-1 font-medium">
-                      <Check className="w-3 h-3 text-emerald-600" />
-                      Applied: <strong>{appliedCoupon.code}</strong> (-{formatPrice(discountAmount)})
-                    </span>
-                    <button
-                      type="button"
-                      onClick={removeCoupon}
-                      className="text-xs text-[#801426] hover:underline font-semibold cursor-pointer"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                )}
-              </div>
-
+            <div className="p-5 border-t border-[#DCC7A5]/40 space-y-4 bg-[#FFFFFF]">
               {/* Price Calculations */}
-              <div className="space-y-1.5 text-xs text-[#343434]/80 pt-2 border-t border-[#DCC7A5]/35">
+              <div className="space-y-2 text-xs text-[#343434]/80">
                 <div className="flex justify-between">
                   <span>Bag Subtotal</span>
                   <span className="font-medium text-[#343434]">{formatPrice(cartTotal)}</span>
                 </div>
-
-                {appliedCoupon && (
-                  <div className="flex justify-between text-[#801426] font-medium">
-                    <span>Coupon Discount</span>
-                    <span>-{formatPrice(discountAmount)}</span>
-                  </div>
-                )}
 
                 <div className="flex justify-between">
                   <span>Pan-India Delivery</span>
@@ -323,7 +246,7 @@ export default function CartDrawer() {
                 <div className="flex justify-between text-sm font-semibold text-[#173F35] pt-2 border-t border-[#DCC7A5]/35">
                   <span>Total Amount</span>
                   <span className="text-base text-[#173F35]">
-                    {formatPrice(finalTotal + (amountNeededForFreeShipping === 0 ? 0 : 150))}
+                    {formatPrice(cartTotal + (amountNeededForFreeShipping === 0 ? 0 : 150))}
                   </span>
                 </div>
               </div>
