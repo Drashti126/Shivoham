@@ -97,12 +97,17 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-[#B99A55]" />
-                <span className="text-[#343434]/80">care@shivoham.com</span>
+                <a
+                  href={`mailto:${BUSINESS_CONTACT.email}`}
+                  className="text-[#343434]/80 hover:text-[#173F35] transition-colors"
+                >
+                  {BUSINESS_CONTACT.email}
+                </a>
               </li>
               <li className="flex items-start gap-2 pt-1">
                 <MapPin className="w-3.5 h-3.5 text-[#B99A55] shrink-0 mt-0.5" />
                 <span className="text-[#343434]/80 leading-relaxed">
-                  Ahmedabad &amp; Surat, Gujarat, India
+                  {BUSINESS_CONTACT.address}
                 </span>
               </li>
               <li className="pt-2 text-[11px] text-[#343434]/55">

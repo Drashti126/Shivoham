@@ -12,6 +12,7 @@ import {
   Heart,
   ArrowRight,
   Phone,
+  Mail,
   MessageCircle,
 } from "lucide-react";
 import LogoPlaceholder from "./LogoPlaceholder";
@@ -400,13 +401,20 @@ export default function Header() {
             </button>
           </nav>
 
-          <div className="pt-2 flex flex-col gap-2 text-xs text-[#242424]/75">
+          <div className="pt-2 flex flex-col gap-2 text-xs text-[#343434]/80">
             <a
               href={`tel:+91${BUSINESS_CONTACT.phone}`}
-              className="flex items-center gap-2 py-1.5 hover:text-[#173D2B]"
+              className="flex items-center gap-2 py-1.5 hover:text-[#173F35]"
             >
-              <Phone className="w-4 h-4 text-[#B89A5A]" />
+              <Phone className="w-4 h-4 text-[#B99A55]" />
               <span>Call: +91 {BUSINESS_CONTACT.phone}</span>
+            </a>
+            <a
+              href={`mailto:${BUSINESS_CONTACT.email}`}
+              className="flex items-center gap-2 py-1.5 hover:text-[#173F35]"
+            >
+              <Mail className="w-4 h-4 text-[#B99A55]" />
+              <span>Email: {BUSINESS_CONTACT.email}</span>
             </a>
             <a
               href={BUSINESS_CONTACT.whatsappUrl}
@@ -421,9 +429,9 @@ export default function Header() {
               href={BUSINESS_CONTACT.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 py-1.5 hover:text-[#173D2B]"
+              className="flex items-center gap-2 py-1.5 hover:text-[#173F35]"
             >
-              <span className="text-[#B89A5A] text-sm">📸</span>
+              <span className="text-[#B99A55] text-sm">📸</span>
               <span>Instagram: {BUSINESS_CONTACT.instagramHandle}</span>
             </a>
           </div>
