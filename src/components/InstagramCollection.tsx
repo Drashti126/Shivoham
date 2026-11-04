@@ -119,19 +119,6 @@ export default function InstagramCollection() {
           ))}
         </div>
 
-        {/* Minimal Follow Us Button */}
-        <div className="text-center mt-8 sm:mt-12">
-          <a
-            href={BUSINESS_CONTACT.instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-7 py-3 bg-[#173F35] hover:bg-[#112d26] text-[#F9F6EF] text-xs uppercase tracking-[0.2em] font-semibold rounded-xs transition-all shadow-2xs hover:shadow-md cursor-pointer border border-[#B99A55]/40"
-          >
-            <InstagramIcon className="w-4 h-4 text-[#B99A55]" />
-            <span>Follow Us</span>
-          </a>
-        </div>
-
       </div>
     </section>
   );
