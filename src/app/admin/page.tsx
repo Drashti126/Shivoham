@@ -526,24 +526,24 @@ export default function AdminDashboardPage() {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen bg-[#FAF7F0] flex items-center justify-center text-[#173D2B]">
+      <div className="min-h-screen bg-[#F9F6EF] flex items-center justify-center text-[#173F35]">
         <div className="text-center space-y-3">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-[#B89A5A]" />
-          <p className="font-serif text-lg">Authenticating SHIVOHAM Admin...</p>
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-[#B99A55]" />
+          <p className="font-serif text-lg text-[#173F35]">Authenticating SHIVOHAM Admin...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] text-[#242424] flex flex-col">
-      {/* Top Navbar */}
-      <header className="bg-[#143426] text-[#FAF7F0] sticky top-0 z-40 border-b border-[#B89A5A]/30">
+    <div className="min-h-screen bg-[#F9F6EF] text-[#343434] flex flex-col">
+      {/* Top Luxury Navbar */}
+      <header className="bg-[#173F35] text-[#F9F6EF] sticky top-0 z-40 border-b border-[#B99A55]/40 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10 overflow-hidden rounded-full border border-[#B89A5A]/40 bg-[#FAF7F0]">
+            <div className="relative w-10 h-10 overflow-hidden rounded-full border border-[#B99A55]/50 bg-[#FFFFFF] p-0.5 shadow-xs">
               <Image
-                src="/images/logo/shivoham-logo.jpeg"
+                src="/images/logo/shivoham-logo-clean.png"
                 alt="SHIVOHAM"
                 width={40}
                 height={40}
@@ -551,10 +551,10 @@ export default function AdminDashboardPage() {
               />
             </div>
             <div>
-              <span className="font-serif text-base sm:text-lg font-semibold tracking-wider text-[#FAF7F0] block leading-tight">
+              <span className="font-serif text-base sm:text-lg font-semibold tracking-wider text-[#F9F6EF] block leading-tight">
                 SHIVOHAM ADMIN
               </span>
-              <span className="text-[10px] text-[#E5D2A5] tracking-widest uppercase block">
+              <span className="text-[10px] text-[#DCC7A5] tracking-widest uppercase block">
                 Boutique Portal • {adminEmail}
               </span>
             </div>
@@ -564,16 +564,16 @@ export default function AdminDashboardPage() {
             <Link
               href="/"
               target="_blank"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FAF7F0]/15 hover:bg-[#FAF7F0]/25 text-[#FAF7F0] text-xs font-medium uppercase tracking-wider rounded-xs transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF]/10 hover:bg-[#FFFFFF]/20 text-[#F9F6EF] text-xs font-medium uppercase tracking-wider rounded-xs transition-colors border border-white/10"
               title="Open public customer storefront in new tab"
             >
               <span>View Storefront</span>
-              <ExternalLink className="w-3.5 h-3.5 text-[#B89A5A]" />
+              <ExternalLink className="w-3.5 h-3.5 text-[#B99A55]" />
             </Link>
 
             <button
               onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#801426]/90 hover:bg-[#801426] text-[#FAF7F0] text-xs font-medium uppercase tracking-wider rounded-xs transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#801426] hover:bg-[#68101e] text-[#F9F6EF] text-xs font-medium uppercase tracking-wider rounded-xs transition-colors cursor-pointer shadow-xs"
               title="Sign out of admin portal"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -587,59 +587,59 @@ export default function AdminDashboardPage() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Metrics Banner */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-          <div className="bg-[#FFFFFF] border border-[#F3EBDD] p-4 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold block">
+          <div className="bg-[#FFFFFF] border border-[#DCC7A5]/40 p-4.5 shadow-xs hover:shadow-md transition-shadow rounded-xs">
+            <span className="text-[10px] uppercase tracking-wider text-[#B99A55] font-semibold block">
               Total Products
             </span>
-            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173D2B]">
+            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173F35]">
               {metrics.total}
             </span>
-            <span className="text-[10px] text-[#242424]/60 block mt-0.5">
+            <span className="text-[10px] text-[#343434]/60 block mt-0.5">
               {metrics.published} Published
             </span>
           </div>
 
-          <div className="bg-[#FFFFFF] border border-[#F3EBDD] p-4 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold block">
+          <div className="bg-[#FFFFFF] border border-[#DCC7A5]/40 p-4.5 shadow-xs hover:shadow-md transition-shadow rounded-xs">
+            <span className="text-[10px] uppercase tracking-wider text-[#B99A55] font-semibold block">
               Sarees
             </span>
-            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173D2B]">
+            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173F35]">
               {metrics.sarees}
             </span>
-            <span className="text-[10px] text-[#242424]/60 block mt-0.5">
+            <span className="text-[10px] text-[#343434]/60 block mt-0.5">
               Pure Silk Drapes
             </span>
           </div>
 
-          <div className="bg-[#FFFFFF] border border-[#F3EBDD] p-4 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold block">
+          <div className="bg-[#FFFFFF] border border-[#DCC7A5]/40 p-4.5 shadow-xs hover:shadow-md transition-shadow rounded-xs">
+            <span className="text-[10px] uppercase tracking-wider text-[#B99A55] font-semibold block">
               Suits
             </span>
-            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173D2B]">
+            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173F35]">
               {metrics.suits}
             </span>
-            <span className="text-[10px] text-[#242424]/60 block mt-0.5">
+            <span className="text-[10px] text-[#343434]/60 block mt-0.5">
               2 &amp; 3-Piece Sets
             </span>
           </div>
 
-          <div className="bg-[#FFFFFF] border border-[#F3EBDD] p-4 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold block">
+          <div className="bg-[#FFFFFF] border border-[#DCC7A5]/40 p-4.5 shadow-xs hover:shadow-md transition-shadow rounded-xs">
+            <span className="text-[10px] uppercase tracking-wider text-[#B99A55] font-semibold block">
               Kurtis
             </span>
-            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173D2B]">
+            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173F35]">
               {metrics.kurtis}
             </span>
-            <span className="text-[10px] text-[#242424]/60 block mt-0.5">
+            <span className="text-[10px] text-[#343434]/60 block mt-0.5">
               Handcrafted Tunics
             </span>
           </div>
 
-          <div className="bg-[#FFFFFF] border border-[#F3EBDD] p-4 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold block">
+          <div className="bg-[#FFFFFF] border border-[#DCC7A5]/40 p-4.5 shadow-xs hover:shadow-md transition-shadow rounded-xs">
+            <span className="text-[10px] uppercase tracking-wider text-[#B99A55] font-semibold block">
               Customer Orders
             </span>
-            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173D2B]">
+            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173F35]">
               {metrics.totalOrders}
             </span>
             <span className="text-[10px] text-emerald-700 font-semibold block mt-0.5">
@@ -647,31 +647,31 @@ export default function AdminDashboardPage() {
             </span>
           </div>
 
-          <div className="bg-[#FFFFFF] border border-[#F3EBDD] p-4 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-wider text-[#B89A5A] font-semibold block">
+          <div className="bg-[#FFFFFF] border border-[#DCC7A5]/40 p-4.5 shadow-xs hover:shadow-md transition-shadow rounded-xs">
+            <span className="text-[10px] uppercase tracking-wider text-[#B99A55] font-semibold block">
               Order Value
             </span>
-            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173D2B]">
+            <span className="font-serif text-2xl sm:text-3xl font-medium text-[#173F35]">
               ₹{metrics.totalRevenue.toLocaleString("en-IN")}
             </span>
-            <span className="text-[10px] text-[#242424]/60 block mt-0.5">
+            <span className="text-[10px] text-[#343434]/60 block mt-0.5">
               Gross Volume
             </span>
           </div>
         </div>
 
         {/* Primary Tab Navigation */}
-        <div className="flex items-center justify-between border-b border-[#F3EBDD] pb-3">
+        <div className="flex items-center justify-between border-b border-[#DCC7A5]/40 pb-3">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setActiveTab("products")}
               className={`px-5 py-2.5 text-xs uppercase tracking-widest font-semibold transition-all rounded-xs cursor-pointer flex items-center gap-2 ${
                 activeTab === "products"
-                  ? "bg-[#173D2B] text-[#FAF7F0] shadow-sm"
-                  : "bg-[#FFFFFF] text-[#242424] border border-[#F3EBDD] hover:border-[#173D2B]"
+                  ? "bg-[#173F35] text-[#F9F6EF] shadow-sm"
+                  : "bg-[#FFFFFF] text-[#343434] border border-[#DCC7A5]/50 hover:border-[#173F35]"
               }`}
             >
-              <Package className="w-4 h-4 text-[#B89A5A]" />
+              <Package className="w-4 h-4 text-[#B99A55]" />
               <span>Products Catalog ({products.length})</span>
             </button>
 
@@ -679,11 +679,11 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab("orders")}
               className={`px-5 py-2.5 text-xs uppercase tracking-widest font-semibold transition-all rounded-xs cursor-pointer flex items-center gap-2 ${
                 activeTab === "orders"
-                  ? "bg-[#173D2B] text-[#FAF7F0] shadow-sm"
-                  : "bg-[#FFFFFF] text-[#242424] border border-[#F3EBDD] hover:border-[#173D2B]"
+                  ? "bg-[#173F35] text-[#F9F6EF] shadow-sm"
+                  : "bg-[#FFFFFF] text-[#343434] border border-[#DCC7A5]/50 hover:border-[#173F35]"
               }`}
             >
-              <ShoppingBag className="w-4 h-4 text-[#B89A5A]" />
+              <ShoppingBag className="w-4 h-4 text-[#B99A55]" />
               <span>Customer Orders ({orders.length})</span>
             </button>
           </div>
@@ -691,9 +691,9 @@ export default function AdminDashboardPage() {
           {activeTab === "products" && (
             <button
               onClick={handleOpenAddModal}
-              className="px-4 py-2.5 bg-[#173D2B] hover:bg-[#0f291d] text-[#FAF7F0] text-xs uppercase tracking-wider font-semibold rounded-xs shadow-md transition-all flex items-center gap-2 cursor-pointer"
+              className="px-4 py-2.5 bg-[#173F35] hover:bg-[#0f291d] text-[#F9F6EF] text-xs uppercase tracking-wider font-semibold rounded-xs shadow-md transition-all flex items-center gap-2 cursor-pointer"
             >
-              <Plus className="w-4 h-4 text-[#B89A5A]" />
+              <Plus className="w-4 h-4 text-[#B99A55]" />
               <span>Add New Product</span>
             </button>
           )}
@@ -703,15 +703,15 @@ export default function AdminDashboardPage() {
         {activeTab === "products" && (
           <div className="space-y-6">
             {/* Filter & Search Bar */}
-            <div className="bg-[#FFFFFF] border border-[#F3EBDD] p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-2xs">
+            <div className="bg-[#FFFFFF] border border-[#DCC7A5]/40 p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-2xs rounded-xs">
               <div className="relative flex-1 max-w-md">
-                <Search className="w-4 h-4 text-[#B89A5A] absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-[#B99A55] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search by title, fabric, or ID..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 text-xs bg-[#FAF7F0] border border-[#F3EBDD] rounded-xs focus:outline-none focus:border-[#173D2B]"
+                  className="w-full pl-9 pr-3 py-2 text-xs bg-[#F9F6EF] border border-[#DCC7A5]/50 rounded-xs focus:outline-none focus:border-[#173F35] text-[#343434]"
                 />
               </div>
 
@@ -720,7 +720,7 @@ export default function AdminDashboardPage() {
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="px-3 py-2 text-xs bg-[#FAF7F0] border border-[#F3EBDD] rounded-xs text-[#242424] font-medium focus:outline-none cursor-pointer"
+                  className="px-3 py-2 text-xs bg-[#F9F6EF] border border-[#DCC7A5]/50 rounded-xs text-[#343434] font-medium focus:outline-none cursor-pointer"
                 >
                   <option value="All">All Categories</option>
                   <option value="Sarees">Sarees ({metrics.sarees})</option>
@@ -732,7 +732,7 @@ export default function AdminDashboardPage() {
                 <select
                   value={stockFilter}
                   onChange={(e) => setStockFilter(e.target.value)}
-                  className="px-3 py-2 text-xs bg-[#FAF7F0] border border-[#F3EBDD] rounded-xs text-[#242424] font-medium focus:outline-none cursor-pointer"
+                  className="px-3 py-2 text-xs bg-[#F9F6EF] border border-[#DCC7A5]/50 rounded-xs text-[#343434] font-medium focus:outline-none cursor-pointer"
                 >
                   <option value="All">All Stock Status</option>
                   <option value="InStock">In Stock</option>
@@ -743,7 +743,7 @@ export default function AdminDashboardPage() {
                 <select
                   value={publishFilter}
                   onChange={(e) => setPublishFilter(e.target.value)}
-                  className="px-3 py-2 text-xs bg-[#FAF7F0] border border-[#F3EBDD] rounded-xs text-[#242424] font-medium focus:outline-none cursor-pointer"
+                  className="px-3 py-2 text-xs bg-[#F9F6EF] border border-[#DCC7A5]/50 rounded-xs text-[#343434] font-medium focus:outline-none cursor-pointer"
                 >
                   <option value="All">All Visibility</option>
                   <option value="Published">Published (Public)</option>
@@ -752,7 +752,7 @@ export default function AdminDashboardPage() {
 
                 <button
                   onClick={loadProducts}
-                  className="p-2 border border-[#F3EBDD] hover:bg-[#FAF7F0] text-[#173D2B] rounded-xs transition-colors cursor-pointer"
+                  className="p-2 border border-[#DCC7A5]/50 hover:bg-[#F9F6EF] text-[#173F35] rounded-xs transition-colors cursor-pointer"
                   title="Refresh products from database"
                 >
                   <RefreshCw className="w-4 h-4" />
@@ -761,10 +761,10 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Products Table */}
-            <div className="bg-[#FFFFFF] border border-[#F3EBDD] shadow-sm overflow-hidden">
+            <div className="bg-[#FFFFFF] border border-[#DCC7A5]/40 shadow-xs rounded-xs overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#FAF7F0] border-b border-[#F3EBDD] uppercase text-[10px] tracking-wider text-[#173D2B] font-semibold">
+                  <thead className="bg-[#F9F6EF] border-b border-[#DCC7A5]/40 uppercase text-[10px] tracking-wider text-[#173F35] font-semibold">
                     <tr>
                       <th className="py-3 px-4">Image</th>
                       <th className="py-3 px-4">Title &amp; Fabric</th>
@@ -775,18 +775,18 @@ export default function AdminDashboardPage() {
                       <th className="py-3 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#F3EBDD]/70">
+                  <tbody className="divide-y divide-[#DCC7A5]/30">
                     {loadingProducts ? (
                       <tr>
-                        <td colSpan={7} className="text-center py-12 text-[#242424]/60">
-                          <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#B89A5A] mb-2" />
+                        <td colSpan={7} className="text-center py-12 text-[#343434]/60">
+                          <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#B99A55] mb-2" />
                           <span>Loading products from database...</span>
                         </td>
                       </tr>
                     ) : filteredProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="text-center py-12 text-[#242424]/60">
-                          <p className="font-serif text-base text-[#173D2B]">No products found</p>
+                        <td colSpan={7} className="text-center py-12 text-[#343434]/60">
+                          <p className="font-serif text-base text-[#173F35]">No products found</p>
                           <p className="text-xs mt-1">Try adjusting your filters or search keywords.</p>
                         </td>
                       </tr>
@@ -796,10 +796,10 @@ export default function AdminDashboardPage() {
                         const inStock = product.inStock !== false;
 
                         return (
-                          <tr key={product.id} className="hover:bg-[#FAF7F0]/50 transition-colors">
+                          <tr key={product.id} className="hover:bg-[#F9F6EF]/60 transition-colors">
                             {/* Image Thumbnail */}
                             <td className="py-3 px-4">
-                              <div className="relative w-14 h-18 bg-[#F3EBDD] overflow-hidden border border-[#F3EBDD]">
+                              <div className="relative w-14 h-18 bg-[#F4EFE5] overflow-hidden rounded-xs border border-[#DCC7A5]/40 shadow-2xs">
                                 <Image
                                   src={encodeURI(product.image)}
                                   alt={product.name}
@@ -812,31 +812,31 @@ export default function AdminDashboardPage() {
 
                             {/* Title & Fabric */}
                             <td className="py-3 px-4 max-w-xs">
-                              <span className="font-medium text-[#173D2B] block text-sm line-clamp-1">
+                              <span className="font-medium text-[#173F35] block text-sm line-clamp-1">
                                 {product.name}
                               </span>
-                              <span className="text-[11px] text-[#B89A5A] font-semibold uppercase block truncate">
+                              <span className="text-[11px] text-[#B99A55] font-semibold uppercase block truncate">
                                 {product.fabric}
                               </span>
-                              <span className="text-[10px] text-[#242424]/50 font-mono block">
+                              <span className="text-[10px] text-[#343434]/50 font-mono block">
                                 ID: {product.id}
                               </span>
                             </td>
 
                             {/* Category Pill */}
                             <td className="py-3 px-4">
-                              <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#FAF7F0] border border-[#F3EBDD] text-[#173D2B]">
+                              <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#F9F6EF] border border-[#DCC7A5]/45 text-[#173F35]">
                                 {product.category}
                               </span>
                             </td>
 
                             {/* Price / MRP */}
                             <td className="py-3 px-4">
-                              <span className="font-semibold text-sm text-[#173D2B] block">
+                              <span className="font-semibold text-sm text-[#173F35] block">
                                 ₹{product.price.toLocaleString("en-IN")}
                               </span>
                               {product.originalPrice && (
-                                <span className="text-xs text-[#242424]/50 line-through block">
+                                <span className="text-xs text-[#343434]/50 line-through block">
                                   ₹{product.originalPrice.toLocaleString("en-IN")}
                                 </span>
                               )}
@@ -924,13 +924,13 @@ export default function AdminDashboardPage() {
               <div className="flex items-center gap-2 flex-wrap">
                 {/* Search orders */}
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 text-[#B89A5A] absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="w-3.5 h-3.5 text-[#B99A55] absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     placeholder="Search by ID, Name, Phone..."
                     value={orderSearchQuery}
                     onChange={(e) => setOrderSearchQuery(e.target.value)}
-                    className="pl-8 pr-3 py-1.5 text-xs bg-[#FAF7F0] border border-[#F3EBDD] rounded-xs focus:outline-none focus:border-[#173D2B]"
+                    className="pl-8 pr-3 py-1.5 text-xs bg-[#F9F6EF] border border-[#DCC7A5]/50 rounded-xs focus:outline-none focus:border-[#173F35] text-[#343434]"
                   />
                 </div>
 
@@ -938,7 +938,7 @@ export default function AdminDashboardPage() {
                 <select
                   value={orderStatusFilter}
                   onChange={(e) => setOrderStatusFilter(e.target.value)}
-                  className="px-2.5 py-1.5 text-xs bg-[#FAF7F0] border border-[#F3EBDD] rounded-xs text-[#242424] font-medium focus:outline-none cursor-pointer"
+                  className="px-2.5 py-1.5 text-xs bg-[#F9F6EF] border border-[#DCC7A5]/50 rounded-xs text-[#343434] font-medium focus:outline-none cursor-pointer"
                 >
                   <option value="All">All Statuses ({orders.length})</option>
                   <option value="Pending">Pending</option>
@@ -951,7 +951,7 @@ export default function AdminDashboardPage() {
 
                 <button
                   onClick={loadOrders}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[#F3EBDD] hover:bg-[#FAF7F0] text-xs font-semibold text-[#173D2B] rounded-xs cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[#DCC7A5]/50 hover:bg-[#F9F6EF] text-xs font-semibold text-[#173F35] rounded-xs cursor-pointer transition-colors"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>Refresh</span>
@@ -960,15 +960,15 @@ export default function AdminDashboardPage() {
             </div>
 
             {loadingOrders ? (
-              <div className="text-center py-16 text-[#242424]/60 bg-[#FFFFFF] border border-[#F3EBDD]">
-                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#B89A5A] mb-2" />
+              <div className="text-center py-16 text-[#343434]/60 bg-[#FFFFFF] border border-[#DCC7A5]/40 rounded-xs">
+                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#B99A55] mb-2" />
                 <span>Loading customer orders...</span>
               </div>
             ) : filteredOrders.length === 0 ? (
-              <div className="text-center py-16 bg-[#FFFFFF] border border-[#F3EBDD] space-y-2">
-                <ShoppingBag className="w-10 h-10 text-[#B89A5A] mx-auto opacity-70" />
-                <h4 className="font-serif text-lg text-[#173D2B]">No Matching Customer Orders</h4>
-                <p className="text-xs text-[#242424]/60 max-w-sm mx-auto">
+              <div className="text-center py-16 bg-[#FFFFFF] border border-[#DCC7A5]/40 rounded-xs space-y-2">
+                <ShoppingBag className="w-10 h-10 text-[#B99A55] mx-auto opacity-70" />
+                <h4 className="font-serif text-lg text-[#173F35]">No Matching Customer Orders</h4>
+                <p className="text-xs text-[#343434]/60 max-w-sm mx-auto">
                   When customers complete checkout or submit their cart on the website, their orders will appear here automatically.
                 </p>
               </div>
@@ -977,12 +977,12 @@ export default function AdminDashboardPage() {
                 {filteredOrders.map((order) => (
                   <div
                     key={order.id}
-                    className="bg-[#FFFFFF] border border-[#F3EBDD] p-5 shadow-2xs space-y-4"
+                    className="bg-[#FFFFFF] border border-[#DCC7A5]/40 p-5 shadow-2xs rounded-xs space-y-4"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F3EBDD] pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#DCC7A5]/30 pb-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-sm font-bold text-[#173D2B]">
+                          <span className="font-mono text-sm font-bold text-[#173F35]">
                             {order.id}
                           </span>
                           <span
@@ -1000,15 +1000,15 @@ export default function AdminDashboardPage() {
                           >
                             {order.status}
                           </span>
-                          <span className="text-[10px] px-2 py-0.5 bg-[#FAF7F0] border border-[#F3EBDD] rounded-full text-[#173D2B] font-medium">
+                          <span className="text-[10px] px-2 py-0.5 bg-[#F9F6EF] border border-[#DCC7A5]/40 rounded-full text-[#173F35] font-medium">
                             {order.paymentMethod === "COD" ? "Cash on Delivery" : "Online Gateway"} •{" "}
                             <strong className={order.paymentStatus === "Paid" ? "text-emerald-700" : "text-amber-800"}>
                               {order.paymentStatus || "Pending"}
                             </strong>
                           </span>
                         </div>
-                        <span className="text-[11px] text-[#242424]/60 flex items-center gap-1 mt-0.5">
-                          <Calendar className="w-3 h-3 text-[#B89A5A]" />
+                        <span className="text-[11px] text-[#343434]/60 flex items-center gap-1 mt-0.5">
+                          <Calendar className="w-3 h-3 text-[#B99A55]" />
                           {new Date(order.createdAt).toLocaleString("en-IN")}
                         </span>
                       </div>
