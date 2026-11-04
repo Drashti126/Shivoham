@@ -10,7 +10,6 @@ import FreshArrivals from "@/components/FreshArrivals";
 import ShivohamEdit from "@/components/ShivohamEdit";
 import TrendingCollection from "@/components/TrendingCollection";
 import WhyChooseShivoham from "@/components/WhyChooseShivoham";
-import InstagramCollection from "@/components/InstagramCollection";
 import Footer from "@/components/Footer";
 import SearchModal from "@/components/SearchModal";
 import CartDrawer from "@/components/CartDrawer";
@@ -46,9 +45,6 @@ export default function HomePage() {
 
           {/* Brand Pillars: Why Choose SHIVOHAM */}
           <WhyChooseShivoham />
-
-          {/* Section 6: Instagram Collection (4 square gallery layout) */}
-          <InstagramCollection />
         </main>
 
         {/* Footer */}
